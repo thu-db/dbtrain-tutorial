@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" viewBox="253 84 322 279" width="322" height="279">
+  <defs>
+    <font-face font-family="Times" font-size="19.36" panose-1="0 0 5 0 0 0 0 9 0 0" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="-774.7934" x-height="446.28906" cap-height="652.34375" ascent="750" descent="-250" font-style="italic" font-weight="400">
+      <font-face-src>
+        <font-face-name name="Times-Italic"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Times" font-size="19.36" panose-1="0 0 5 0 0 0 0 9 0 0" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="-774.7934" x-height="446.28906" cap-height="652.34375" ascent="750" descent="-250" font-style="italic" font-weight="400">
+      <font-face-src>
+        <font-face-name name="Times-Italic"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Times" font-size="13" panose-1="0 0 5 0 0 0 0 9 0 0" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="-1153.8462" x-height="446.28906" cap-height="652.34375" ascent="750" descent="-250" font-style="italic" font-weight="400">
+      <font-face-src>
+        <font-face-name name="Times-Italic"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Apple Symbols" font-size="19.36" panose-1="2 0 0 0 0 0 0 0 0 0" units-per-em="1000" underline-position="-73.24219" underline-thickness="48.828125" slope="0" x-height="392.57812" cap-height="546.3867" ascent="666.5039" descent="-250" font-weight="400">
+      <font-face-src>
+        <font-face-name name="AppleSymbols"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Times New Roman" font-size="19.36" panose-1="2 2 6 3 5 4 5 2 3 4" units-per-em="1000" underline-position="-108.88672" underline-thickness="48.828125" slope="0" x-height="447.2656" cap-height="662.1094" ascent="891.1133" descent="-216.3086" font-weight="400">
+      <font-face-src>
+        <font-face-name name="TimesNewRomanPSMT"/>
+      </font-face-src>
+    </font-face>
+    <font-face font-family="Times" font-size="13.552" panose-1="0 0 5 0 0 0 0 9 0 0" units-per-em="1000" underline-position="-75.68359" underline-thickness="49.316406" slope="-1106.8477" x-height="446.28906" cap-height="652.34375" ascent="750" descent="-250" font-style="italic" font-weight="400">
+      <font-face-src>
+        <font-face-name name="Times-Italic"/>
+      </font-face-src>
+    </font-face>
+  </defs>
+  <metadata> Produced by OmniGraffle 7.18.5\n2021-09-27 08:12:05 +0000</metadata>
+  <g id="Canvas_1" stroke="none" stroke-opacity="1" fill="none" stroke-dasharray="none" fill-opacity="1">
+    <title>Canvas 1</title>
+    <rect fill="white" x="253" y="84" width="322" height="279"/>
+    <g id="Canvas_1_Layer_1">
+      <title>Layer 1</title>
+      <g id="Graphic_15">
+        <text transform="translate(263.446 333.5)" fill="#333">
+          <tspan font-family="Times" font-size="19.36" font-style="italic" font-weight="400" fill="#333" x="0" y="19">student</tspan>
+        </text>
+      </g>
+      <g id="Graphic_16">
+        <text transform="translate(434.5 247)" fill="#333">
+          <tspan font-family="Times" font-size="19.36" font-style="italic" font-weight="400" fill="#333" x="0" y="19">student_course</tspan>
+        </text>
+      </g>
+      <g id="Graphic_17">
+        <text transform="translate(258.5 242)" fill="#333">
+          <tspan font-family="Times" font-size="19.36" font-style="italic" font-weight="400" fill="#333" x="0" y="19">σ</tspan>
+          <tspan font-family="Times" font-size="13" font-style="italic" font-weight="400" fill="#333" y="25">id=2077010001</tspan>
+        </text>
+      </g>
+      <g id="Graphic_20">
+        <text transform="translate(386.0226 181.5)" fill="#333">
+          <tspan font-family="Apple Symbols" font-size="19.36" font-weight="400" fill="#333" x="0" y="13">⋈</tspan>
+        </text>
+      </g>
+      <g id="Line_26">
+        <line x1="296" y1="243" x2="381.0226" y2="197.74207" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_31">
+        <line x1="409.5" y1="197.74207" x2="494.5226" y2="241.66667" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Graphic_39">
+        <text transform="translate(370.70095 89.8)" fill="#333">
+          <tspan font-family="Times New Roman" font-size="19.36" font-weight="400" fill="#333" x="0" y="17">Π</tspan>
+          <tspan font-family="Times" font-size="13.552" font-style="italic" font-weight="400" fill="#333" y="17">grade</tspan>
+        </text>
+      </g>
+      <g id="Line_40">
+        <line x1="296" y1="269" x2="296.07143" y2="336.91265" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+      <g id="Line_41">
+        <line x1="393" y1="112" x2="393.07143" y2="179.91265" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>
