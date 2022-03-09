@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thu-db/dbs-tutorial.git"
+    "url": "git+https://github.com/thu-db/dbtrain-tutorial.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thu-db/dbs-tutorial/issues"
+    "url": "https://github.com/thu-db/dbtrain-tutorial/issues"
   },
-  "homepage": "https://github.com/thu-db/dbs-tutorial#readme",
+  "homepage": "https://github.com/thu-db/dbtrain-tutorial#readme",
   "devDependencies": {
     "crypto-js": "^4.1.1",
     "gitbook-plugin-alerts": "^0.2.0",
