@@ -32,9 +32,6 @@ jobs:
         run: |
           npm run build
           rm -f _book/footer.md
-          mkdir -p _book/download
-          zip -qr _book/download/filesystem.zip ./filesystem
-          cp SQL.g4 _book/download/
 
       - name: Deploy honkit
         uses: JamesIves/github-pages-deploy-action@releases/v3
