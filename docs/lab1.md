@@ -28,3 +28,5 @@
 届时网络学堂会布置作业，在作业中提交报告和实验1最终版本 CI 测试的 job id。
 
 job id 的获取方法：在仓库主页的 clone 按钮左下方会有一个绿色的√或红色的×，点击它会进入 pipeline 页面，再点击下方的 test_oj 即可进入 job 页面，此时页面上方会显示 job #<id>。或者直接访问 https://git.tsinghua.edu.cn/dbtrain-2021/dbtrain-lab-(number)/-/jobs/ 查看自己的所有 job，其中 (number) 改为自己的学号。
+
+{% include "/footer.md" %}
