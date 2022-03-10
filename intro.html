@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>实验框架 · dbs-tutorial</title>
+        <title>重要声明 · dbs-tutorial</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.7.1">
@@ -100,8 +100,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="intro.html" />
+    <link rel="next" href="test.html" />
     
+    
+    <link rel="prev" href="./" />
     
 
     </head>
@@ -132,7 +134,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -145,7 +147,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="intro.html">
+        <li class="chapter active" data-level="1.2" data-path="intro.html">
             
                 <a href="intro.html">
             
@@ -221,7 +223,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >实验框架</a>
+        <a href="." >重要声明</a>
     </h1>
 </div>
 
@@ -239,56 +241,87 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <html><head></head><body><h1 id="实验框架整体设计说明">实验框架整体设计说明</h1>
-<h2 id="层级划分">层级划分</h2>
-<p>实验框架设计上的整体架构按照各次实验内容进行了层次划分，从底层的操作系统级别的页式文件管理到顶层的SQL命令行交互，主要可以划分为如下的层级结构。
-<img src="pics/层次化结构设计.png" alt="avatar">
-上述图片中模块后编号表示对应的实验编号。
-此处按照实验设计的顺序简单介绍各个模块的主要功能：</p>
+                                <html><head></head><body><h1 id="重要声明">重要声明</h1>
+<h2 id="代码位置">代码位置</h2>
+<p>对于基础功能，仅需要正确补充填空区域的代码，实现对应的功能即可。
+各次实验的填空区域均进行了注释，以LAB 1为例，仅需要在如下区间内填充代码即可。</p>
+<pre><code class="lang-c++"><span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> Field序列化</span>
+<span class="hljs-comment">// LAB 1 BEGIN</span>
+
+<span class="hljs-comment">// LAB 1 END</span>
+</code></pre>
+<p>各位同学仅需要搜索对应的注释&quot;// LAB N BEGIN&quot;即可快速定位补充代码的区域。</p>
+<h2 id="补丁及更新声明">补丁及更新声明</h2>
+<p>随着实验的推进，存在需要合并实验框架BUG补丁、实验框架更新补丁以及测试用例更新补丁的情景，这里我们采用了远程分支合并的方式进行实验框架更新。
+更新的具体流程如下：</p>
 <ol>
-<li>缓存和磁盘：底层缓存和磁盘管理，支持UNIX操作系统（Linux+Mac），不支持Windows操作系统。</li>
-<li>日志：仅负责存储日志信息。</li>
-<li>记录管理：负责数据库系统中关系内记录的管理，实现了对于表(Table)，记录(Record)，以及字段(Field)等数据库系统基本组成部分的抽象，同时负责处理这些基本组成组织的到实际物理页面的转化过程。</li>
-<li>事务管理：负责日志的解析以及在自动检测基于日志的自动恢复等操作，需要负责处理事务重做和事务回滚。</li>
-<li>执行器：基于火山模型设计的简单执行器，基于上层给出的执行计划树完成查询的实际执行过程。</li>
-<li>优化器：接收解析器的语法分析树，经过逻辑优化和物理优化过程转化为执行计划树。</li>
-<li>并发控制：负责多个事务并发进行情况下的执行过程控制，管理锁和记录的多版本信息。</li>
-<li>解析器：SQL语法解析，将原始SQL转化为语法分析树。</li>
-<li>前端命令号：负责用户交互，实时接收SQL语句输入并给出查询结果的输出</li>
+<li>首先，各位建立的仓库已经远程添加了额外的分支:debug和update。前者用于BUG补丁更新，后者用于式样框架更新（包括测试用例更新），使用方法一致。</li>
+<li>每次更新只需要拉取该分支最新内容并合并到主分支即可（冲突需自行解决）。</li>
 </ol>
-<h2 id="功能模块划分">功能模块划分</h2>
-<p>实验框架的源代码按照功能模块进行组织，此处按照各次实验中涉及的各个功能模块进行简单介绍：</p>
-<h3 id="lab-1-记录管理">LAB 1 记录管理</h3>
-<h4 id="record-模块">record 模块</h4>
-<p>实现了记录(Record)和字段(Field)类型，实现了包括加加载(Load)、存储(Store)等基本函数。</p>
-<h4 id="table-模块">table 模块</h4>
-<p>实现了表(Table)类型，表结构包含表的元信息(TableMeta)以及页面文件组成的实际存储数据。通过PageHanlde类可以实现物理页面的无格式数据到格式化记录的转化和操作。同时，可以通过配置隐藏列的方式向数据表中存储声明字段外的额外字段、例如后续实验中需要使用的记录标识(RID)、版本号(VERSION)、锁状态(WR_LOCK)等。</p>
-<h3 id="lab-2-事务与日志">LAB 2 事务与日志</h3>
-<h4 id="log-模块">log 模块</h4>
-<p>实现了日志(Log)的序列化和解析，采用物理日志的方式记录数据变化。管理事务的REDO和UNDO过程。同时需要管理日志数据的组织和持久化过程。</p>
-<h4 id="storage-模块">storage 模块</h4>
-<p>底层缓存、磁盘的管理，由于缓存数据保存在内存中，需要结合日志模块以及磁盘保证写入数据的持久性。</p>
-<h3 id="lab-3-执行器">LAB 3 执行器</h3>
-<h4 id="oper-模块">oper 模块</h4>
-<p>实现了抽象类算子结点(OperNode)，算子结点组织成树结构可以构成执行计划树，通过实现不同算子结点的Next函数，可以实现以向量化模型为基础的执行引擎。</p>
-<h3 id="lab-4-优化器">LAB 4 优化器</h3>
-<h4 id="optim-模块">optim 模块</h4>
-<p>实现了优化器(Optimizor)，对于上层visitor解析的抽象语法树进行逻辑优化和物理优化两个过程，形成高效的执行计划交由底层执行引擎进行处理。</p>
-<h3 id="lab-5-并发控制">LAB 5 并发控制</h3>
-<p>整体性的功能添加，本次实验中没有设计单独的独立功能模块。</p>
-<h3 id="其余模块">其余模块</h3>
-<h4 id="utils-模块">utils 模块</h4>
-<p>一些常用的数据结构，此处给出了并查集(UFSet)以及位图(Bitmap)。</p>
-<h4 id="result-模块">result 模块</h4>
-<p>用于前端输出，包含记录头和记录内容。</p>
-<h4 id="system-模块">system 模块</h4>
-<p>数据库管理模块，主要实现了元信息的管理。</p>
-<h4 id="parser-模块">parser 模块</h4>
-<p>解析器模块，将SQL语句转化为抽象语法树。</p>
-<h4 id="extra">Extra</h4>
-<p>cli.cpp为主程序入口。defines.h是通用头文件，可以将常量值和常用的类型声明置于该文件内。</p>
+<p>更新补丁的使用非常重要。所以助教将LAB 1中一个测例设置在远程分支update中来方便大家尽早掌握补丁合并的流程。
+同时，所有补丁的发布将在<strong>课程群</strong>中通知，一般更新时间暂定为晚22:00左右。</p>
+<h2 id="提交声明">提交声明</h2>
+<ol>
+<li>第N次实验截止后发布第N+1次实验，防止出现提交错误。</li>
+<li>第N次实验截止后发布一个10天的作业补交窗口。</li>
+<li>作业仅需要提交对应版本的job id以及实验报告，job id直接使用提交窗口的输入框提交，报告以pdf形式通过附件提交。</li>
+</ol>
+<h2 id="测试说明">测试说明</h2>
+<p>助教已经为各位同学配置了自动测试的pipeline，同学们只需要正常提交就成自动完成测试。在清华git仓库中可以查看到对应实验的基本测试完成情况。为了让大家更加专注于对于数据库系统整体结构和关键技术要点的理解和思考，各次实验的测试用例都是非常简单且易于通过的测例，且<strong>不设置隐藏测例</strong>。</p>
+<h2 id="高级功能">高级功能</h2>
+<ol>
+<li>高级功能不要求严格按照各次实验文档给出的推荐选项，只需要选择老师课程讲解过程中与试验相关的知识即可。</li>
+<li>高级功能的添加要尽可能设计对应的测试用例。不要求必须使用SQL测例，可以使用google-test进行模块测试。</li>
+<li>高级功能的总评为5分，得分难度非线性递增：只需要给出一个合理的设计也能获得分数，但是希望取得高分则必须实现有挑战性的一些功能。</li>
+</ol>
+<h2 id="报告声明">报告声明</h2>
+<h3 id="内容要求">内容要求</h3>
+<p>报告需要至少包括如下内容：</p>
+<ol>
+<li>基本功能的实现难点</li>
+<li>高级功能的实现方式（实现的）或者设想（没实现的）</li>
+</ol>
+<p>其余内容随意。</p>
+<h3 id="报告格式">报告格式</h3>
+<ul>
+<li>要求为pdf形式。</li>
+<li>没有具体内容模板，但是建议从报告结构上<strong>突出重点内容</strong>，例如采用标题突出段落重点。</li>
+<li>一定<strong>不要</strong>直接将代码段复制到报告中。</li>
+<li>报告要求严格控制在<strong>600字以内</strong>。</li>
+<li>可以使用标准的示意图来展示自己的设计，图片不计算文字。<strong>不要</strong>使用过于抽象的手绘示意图。</li>
+</ul>
+<h2 id="bug-report">BUG Report</h2>
+<p>对于实验框架的BUG可以在网络学堂的课程讨论区进行发布，方便其他同学查看。此处给出BUG Report的标准格式。</p>
+<pre><code>【重要BUG】\【一般BUG】
+位置: xxx.cpp(文件名) 117(debug分支中对应起始行号)
+说明: ......(简要的说明文字)
+（如果有补丁文件，直接利用git diff创建补丁，置于附件中即可）
+</code></pre><p>git diff补丁文件制作方法教程：</p>
+<pre><code>git checkout debug
+## 建议每次修复BUG重新建立分支
+git checkout -b debug-patch(任意分支名)
+## 修复BUG
+git add .
+git commit -m &quot;Fix a bug in ...&quot;
+git diff debug &gt; xxx.patch(任意patch名)
+## 提交xxx.patch文件到讨论区
+</code></pre><h2 id="评分声明">评分声明</h2>
+<ol>
+<li>时间规范</li>
+</ol>
+<p>各位同学需要严格按照各个实验的截止时间完成各次实验任务，对于没有按时完成实验的同学会在实验得分上收到一定影响。
+迟交实验具体的惩罚措施如下：
+<strong>迟交成绩 = MAX(0, 实际成绩 <em> (1 - 0.1 </em> 迟交天数))</strong></p>
+<ol>
+<li>诚信规范</li>
+</ol>
+<p>各位同学一定要独立完成各次实验，本课程鼓励同学们思想上的交流，但<strong>不建议同学们直接进行代码交换</strong>。如果发现严重的代码雷同，可能会面临助教谈话甚至于当此实验记为0分的风险。</p>
+<ol>
+<li>保密规范</li>
+</ol>
+<p>各位同学一定<strong>不要将本次实验</strong>放到公共仓库上。</p>
 <hr>
-<p><em><small>last update at: 2022/3/9 23:05:10</small></em></p>
+<p><em><small>last update at: 2022/3/10 12:06:09</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -332,8 +365,12 @@
 
             
                 
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: 实验框架">
+                    <i class="fa fa-angle-left"></i>
+                </a>
                 
-                <a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 重要声明">
+                
+                <a href="test.html" class="navigation navigation-next " aria-label="Next page: 测试说明">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -344,7 +381,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"实验框架","level":"1.1","depth":1,"next":{"title":"重要声明","level":"1.2","depth":1,"path":"intro.md","ref":"intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"README.md","mtime":"2022-03-10T04:05:57.593Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-10T04:06:10.101Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"重要声明","level":"1.2","depth":1,"next":{"title":"测试说明","level":"1.3","depth":1,"path":"test.md","ref":"test.md","articles":[]},"previous":{"title":"实验框架","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"intro.md","mtime":"2022-03-10T04:05:57.593Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-10T04:06:10.101Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
