@@ -171,6 +171,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.4" data-path="workflow.html">
+            
+                <a href="workflow.html">
+            
+                    
+                    运行流程
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -248,19 +261,19 @@
 <ol>
 <li>缓存和磁盘：底层缓存和磁盘管理，支持UNIX操作系统（Linux+Mac），不支持Windows操作系统。</li>
 <li>日志：仅负责存储日志信息。</li>
-<li>记录管理：负责数据库系统中关系内记录的管理，实现了对于表(Table)，记录(Record)，以及字段(Field)等数据库系统基本组成部分的抽象，同时负责处理这些基本组成组织的到实际物理页面的转化过程。</li>
-<li>事务管理：负责日志的解析以及在自动检测基于日志的自动恢复等操作，需要负责处理事务重做和事务回滚。</li>
+<li>记录管理：负责数据库系统中关系内记录的管理，实现了对于表(Table)，记录(Record)，以及字段(Field)等数据库系统基本组成部分的抽象，同时负责处理这些基本组成部分的到实际物理页面的序列化和反序列化。</li>
+<li>事务管理：负责日志的解析以及在基于日志的自动恢复等操作，需要负责处理事务重做和事务回滚。</li>
 <li>执行器：基于火山模型设计的简单执行器，基于上层给出的执行计划树完成查询的实际执行过程。</li>
 <li>优化器：接收解析器的语法分析树，经过逻辑优化和物理优化过程转化为执行计划树。</li>
 <li>并发控制：负责多个事务并发进行情况下的执行过程控制，管理锁和记录的多版本信息。</li>
 <li>解析器：SQL语法解析，将原始SQL转化为语法分析树。</li>
-<li>前端命令号：负责用户交互，实时接收SQL语句输入并给出查询结果的输出</li>
+<li>前端命令行：负责用户交互，实时接收SQL语句输入并给出查询结果的输出</li>
 </ol>
 <h2 id="功能模块划分">功能模块划分</h2>
 <p>实验框架的源代码按照功能模块进行组织，此处按照各次实验中涉及的各个功能模块进行简单介绍：</p>
 <h3 id="lab-1-记录管理">LAB 1 记录管理</h3>
 <h4 id="record-模块">record 模块</h4>
-<p>实现了记录(Record)和字段(Field)类型，实现了包括加加载(Load)、存储(Store)等基本函数。</p>
+<p>实现了记录(Record)和字段(Field)类型，实现了包括反序列化(Load)、序列化(Store)等基本函数。</p>
 <h4 id="table-模块">table 模块</h4>
 <p>实现了表(Table)类型，表结构包含表的元信息(TableMeta)以及页面文件组成的实际存储数据。通过PageHanlde类可以实现物理页面的无格式数据到格式化记录的转化和操作。同时，可以通过配置隐藏列的方式向数据表中存储声明字段外的额外字段、例如后续实验中需要使用的记录标识(RID)、版本号(VERSION)、锁状态(WR_LOCK)等。</p>
 <h3 id="lab-2-事务与日志">LAB 2 事务与日志</h3>
@@ -288,7 +301,7 @@
 <h4 id="extra">Extra</h4>
 <p>cli.cpp为主程序入口。defines.h是通用头文件，可以将常量值和常用的类型声明置于该文件内。</p>
 <hr>
-<p><em><small>last update at: 2022/3/11 13:33:04</small></em></p>
+<p><em><small>last update at: 2022/3/11 16:33:38</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -344,7 +357,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"实验框架","level":"1.1","depth":1,"next":{"title":"重要声明","level":"1.2","depth":1,"path":"intro.md","ref":"intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"README.md","mtime":"2022-03-11T08:13:39.264Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-11T08:13:49.024Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"实验框架","level":"1.1","depth":1,"next":{"title":"重要声明","level":"1.2","depth":1,"path":"intro.md","ref":"intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"README.md","mtime":"2022-03-11T08:33:28.901Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-11T08:33:39.497Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
