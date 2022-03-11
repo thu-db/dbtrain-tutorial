@@ -264,11 +264,16 @@
 <h2 id="提交说明">提交说明</h2>
 <p>评测通过 CI 进行，每当你在 master 分支上 push 更新时，评测机会自动将仓库的 src 文件夹放入测试仓库中编译，然后运行测试脚本进行测试。</p>
 <p>不要私自修改 .gitlab-ci.yml 文件。</p>
-<p>评测</p>
-<ol>
-<li>第N次实验截止后发布第N+1次实验，防止出现提交错误。</li>
-<li>第N次实验截止后发布一个10天的作业补交窗口。</li>
-<li>作业仅需要提交对应版本的commit id以及实验报告，commit id直接使用提交窗口的输入框提交，报告以pdf形式通过附件提交。</li>
+<p>评测机环境为 Ubuntu 20.04，各工具版本如下：</p>
+<pre><code>cmake 3.16.3
+make 4.2.1
+g++ 9.4.0
+flex 2.6.4
+bison 3.5.1
+</code></pre><ol>
+<li>第 N 次实验截止后发布第 N+1 次实验，防止出现提交错误。</li>
+<li>第 N 次实验截止后发布一个 10 天的作业补交窗口。</li>
+<li>作业仅需要提交对应版本的 commit id 以及实验报告，commit id 直接使用提交窗口的输入框提交，报告以pdf形式通过附件提交。</li>
 </ol>
 <h2 id="高级功能">高级功能</h2>
 <ol>
@@ -338,7 +343,7 @@ git diff debug &gt; xxx.patch(任意patch名)
 </ol>
 <p>各位同学一定<strong>不要将本次实验</strong>放到公共仓库上。</p>
 <hr>
-<p><em><small>last update at: 2022/3/11 19:30:57</small></em></p>
+<p><em><small>last update at: 2022/3/11 19:46:29</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -398,7 +403,7 @@ git diff debug &gt; xxx.patch(任意patch名)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"实验说明","level":"1.3","depth":1,"next":{"title":"lab 1: 记录管理","level":"2.1","depth":1,"path":"lab1.md","ref":"lab1.md","articles":[]},"previous":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"intro.md","mtime":"2022-03-11T11:38:35.308Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-11T11:38:44.820Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"实验说明","level":"1.3","depth":1,"next":{"title":"lab 1: 记录管理","level":"2.1","depth":1,"path":"lab1.md","ref":"lab1.md","articles":[]},"previous":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"intro.md","mtime":"2022-03-11T11:46:17.124Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-11T11:46:30.533Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
