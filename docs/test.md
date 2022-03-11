@@ -187,4 +187,72 @@ t_basic
 
 也可以通过该条测试。
 
-`test.sh`是为 CI 准备的脚本，本地测试不会用到它。
+### 测试脚本输出
+
+测试通过时，脚本会输出 Test PASSED：
+
+```
+Test 10_basic PASSED
+Test 20_error PASSED
+Test 30_long_text PASSED
+Test 40_many_rows PASSED
+5 / 5 cases PASSED
+```
+
+测试失败分为如下几种情况：
+
+1. 结果数目错误：
+
+```
+Incorrect number of results
+Expected:
+26
+Got:
+23
+Test 00_setup FAILED
+```
+
+测试 00_setup 中共 25 条 SQL，期望输出 26 个结果（包括退出数据库时输出的 Bye），但实际只输出了 23 个结果，可查看是否有某些 SQL 运行失败导致没有输出结果。
+
+2. 结果行数错误：
+
+```
+SQL 20
+Incorrect length
+Expected:
+3
+Got:
+1
+Test 30_multi_pages FAILED
+```
+测试 30_multi_pages 的第 20 条 SQL 期望输出 3 行，实际输出 1 行。
+
+3. 结果错误：
+
+```
+SQL 14
+Incorrect result
+Expected:
+age | INT | 4
+Got:
+age | INT | 12884901892
+Test 00_setup FAILED
+```
+
+第 14 条 SQL 输出结果与期望输出不一致，可在 result 文件中查看第 14 条 SQL 及对应输出。
+
+4. 异常退出：
+
+```
+Traceback (most recent call last):
+  File "check.py", line 105, in main
+    if test_case.check():
+  File "check.py", line 46, in check
+    tmp_results = tmp_result_file.read().splitlines()
+  File "/usr/lib/python3.8/codecs.py", line 322, in decode
+    (result, consumed) = self._buffer_decode(data, self.errors, final)
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x96 in position 347: invalid start byte
+Test 40_many_rows FAILED
+```
+
+脚本运行错误，根据报错信息，推测是由于输出文件中包含异常字符导致。
