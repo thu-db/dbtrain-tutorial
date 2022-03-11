@@ -100,7 +100,7 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="intro.html" />
+    <link rel="next" href="test.html" />
     
     
 
@@ -145,20 +145,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="intro.html">
-            
-                <a href="intro.html">
-            
-                    
-                    重要声明
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3" data-path="test.html">
+        <li class="chapter " data-level="1.2" data-path="test.html">
             
                 <a href="test.html">
             
@@ -171,12 +158,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="workflow.html">
+        <li class="chapter " data-level="1.3" data-path="intro.html">
             
-                <a href="workflow.html">
+                <a href="intro.html">
             
                     
-                    运行流程
+                    实验说明
             
                 </a>
             
@@ -255,7 +242,7 @@
                                 <html><head></head><body><h1 id="实验框架整体设计说明">实验框架整体设计说明</h1>
 <h2 id="层级划分">层级划分</h2>
 <p>实验框架设计上的整体架构按照各次实验内容进行了层次划分，从底层的操作系统级别的页式文件管理到顶层的SQL命令行交互，主要可以划分为如下的层级结构。  </p>
-<p><img src="pics/层次化结构设计.png" alt="avatar"></p>
+<p><img src="pics/层次化结构设计.svg" alt="avatar"></p>
 <p>上述图片中模块后编号表示对应的实验编号。
 此处按照实验设计的顺序简单介绍各个模块的主要功能：</p>
 <ol>
@@ -268,6 +255,14 @@
 <li>并发控制：负责多个事务并发进行情况下的执行过程控制，管理锁和记录的多版本信息。</li>
 <li>解析器：SQL语法解析，将原始SQL转化为语法分析树。</li>
 <li>前端命令行：负责用户交互，实时接收SQL语句输入并给出查询结果的输出</li>
+</ol>
+<h2 id="sql整体运行流程">SQL整体运行流程</h2>
+<p><img src="pics/工作流程.svg" alt="avatar"> </p>
+<p>如图所示，系统整体的工作流程主要可以概括为如下几个子过程：</p>
+<ol>
+<li>SQL解析：将原始SQL查询语句转化为抽象语法树</li>
+<li>优化器：对于抽象语法树进行逻辑优化和物理优化过程，生成执行计划树</li>
+<li>执行器：按照火山模型完成执行计划树，通过不同算子实现对于页面数据的访问和修改</li>
 </ol>
 <h2 id="功能模块划分">功能模块划分</h2>
 <p>实验框架的源代码按照功能模块进行组织，此处按照各次实验中涉及的各个功能模块进行简单介绍：</p>
@@ -303,7 +298,7 @@
 <h4 id="extra">Extra</h4>
 <p>cli.cpp为主程序入口。defines.h是通用头文件，可以将常量值和常用的类型声明置于该文件内。</p>
 <hr>
-<p><em><small>last update at: 2022/3/11 19:17:33</small></em></p>
+<p><em><small>last update at: 2022/3/11 19:30:57</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -348,7 +343,7 @@
             
                 
                 
-                <a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 重要声明">
+                <a href="test.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 测试说明">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -359,7 +354,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"实验框架","level":"1.1","depth":1,"next":{"title":"重要声明","level":"1.2","depth":1,"path":"intro.md","ref":"intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"README.md","mtime":"2022-03-11T11:17:25.080Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-11T11:17:34.081Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"实验框架","level":"1.1","depth":1,"next":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"README.md","mtime":"2022-03-11T11:30:49.547Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-11T11:30:58.724Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

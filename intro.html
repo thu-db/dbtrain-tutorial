@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>重要声明 · dbs-tutorial</title>
+        <title>实验说明 · dbs-tutorial</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.7.1">
@@ -100,10 +100,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="test.html" />
+    <link rel="next" href="lab1.html" />
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="test.html" />
     
 
     </head>
@@ -147,20 +147,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.2" data-path="intro.html">
-            
-                <a href="intro.html">
-            
-                    
-                    重要声明
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.3" data-path="test.html">
+        <li class="chapter " data-level="1.2" data-path="test.html">
             
                 <a href="test.html">
             
@@ -173,12 +160,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="workflow.html">
+        <li class="chapter active" data-level="1.3" data-path="intro.html">
             
-                <a href="workflow.html">
+                <a href="intro.html">
             
                     
-                    运行流程
+                    实验说明
             
                 </a>
             
@@ -236,7 +223,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >重要声明</a>
+        <a href="." >实验说明</a>
     </h1>
 </div>
 
@@ -254,7 +241,7 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <html><head></head><body><h1 id="重要说明">重要说明</h1>
+                                <html><head></head><body><h1 id="实验说明">实验说明</h1>
 <h2 id="代码位置">代码位置</h2>
 <p>对于基础功能，仅需要正确补充填空区域的代码，实现对应的功能即可。
 各次实验的填空区域均进行了注释，以LAB 1为例，仅需要在如下区间内填充代码即可。</p>
@@ -263,16 +250,21 @@
 <span class="hljs-comment">// LAB 1 END</span>
 </code></pre>
 <p>各位同学仅需要搜索对应的注释&quot;// LAB N BEGIN&quot;即可快速定位补充代码的区域。</p>
-<h2 id="补丁及更新说明">补丁及更新说明</h2>
-<p>随着实验的推进，存在需要合并实验框架BUG补丁和实验框架更新补丁的情景，这里我们采用了远程分支合并的方式进行实验框架更新。
-更新的具体流程如下：</p>
-<ol>
-<li>首先，各位建立的仓库已经远程添加了额外的分支:debug和update。前者用于BUG补丁更新，后者用于式样框架更新，使用方法一致。</li>
-<li>每次更新只需要拉取该分支最新内容并合并到主分支即可（冲突需自行解决）。</li>
-</ol>
-<p>更新补丁的使用非常重要。所以助教将LAB 1中一个测例设置在远程分支update中来方便大家尽早掌握补丁合并的流程。
-同时，所有补丁的发布将在<strong>课程群</strong>中通知，一般更新时间暂定为晚22:00左右。</p>
+<h2 id="更新说明">更新说明</h2>
+<p>每次实验仅会发布截止到该实验所需要的源代码部分，所以进行新的实验之前，需要将新的实验框架更新部分添加到当前的实验框架上。为了新增一个远程仓库，在你的 dbtrain-lab 仓库目录下执行：</p>
+<pre><code class="lang-bash">git remote add upstream git@git.tsinghua.edu.cn:dbtrain/2022/dbtrain-lab-template.git
+</code></pre>
+<p>之后每次需要拉取新的分支时，执行</p>
+<pre><code class="lang-bash">git fetch upstream
+</code></pre>
+<p>然后再将更新的分支并入你的代码，例如将 lab2 分支以 merge 方式并入当前分支，执行</p>
+<pre><code class="lang-bash">git merge upstream/lab2
+</code></pre>
+<p>merge 后可能产生冲突（如果你和上游仓库对同样的地方进行了不同的修改），这种情况请手动解决所有冲突并执行 git 的 add 和 commit 指令完成合并。</p>
 <h2 id="提交说明">提交说明</h2>
+<p>评测通过 CI 进行，每当你在 master 分支上 push 更新时，评测机会自动将仓库的 src 文件夹放入测试仓库中编译，然后运行测试脚本进行测试。</p>
+<p>不要私自修改 .gitlab-ci.yml 文件。</p>
+<p>评测</p>
 <ol>
 <li>第N次实验截止后发布第N+1次实验，防止出现提交错误。</li>
 <li>第N次实验截止后发布一个10天的作业补交窗口。</li>
@@ -296,9 +288,9 @@
 <h3 id="内容要求">内容要求</h3>
 <p>报告需要至少包括如下内容：</p>
 <ol>
-<li>基本功能的实现难点</li>
-<li>每个功能实现大致用了多少时间，实验总耗时多少（该条仅用于课程调查，不影响评分）
-3.（可选）高级功能实现方式</li>
+<li>基本功能的实现难点。</li>
+<li>每个功能实现大致用了多少时间，实验总耗时多少（该条仅用于课程调查，不影响评分）。</li>
+<li>（可选）高级功能的设计与实现方式。</li>
 </ol>
 <h3 id="报告格式">报告格式</h3>
 <ul>
@@ -306,7 +298,7 @@
 <li>没有具体内容模板，但是建议从报告结构上<strong>突出重点内容</strong>，例如采用标题突出段落重点。</li>
 <li><strong>不要</strong>直接将大段代码复制到报告中。</li>
 <li>报告不要过长，过于冗长的报告可能会影响你的分数。</li>
-<li>可以使用标准的示意图来展示自己的设计，图片不计算文字。<strong>不要</strong>使用过于抽象的手绘示意图。</li>
+<li>可以使用标准的示意图来展示自己的设计，<strong>不要</strong>使用过于抽象的手绘示意图。</li>
 </ul>
 <h2 id="bug-report">BUG Report</h2>
 <p>对于实验框架的BUG可以在网络学堂的课程讨论区进行发布，方便其他同学查看。此处给出BUG Report的标准格式。</p>
@@ -330,7 +322,7 @@ git commit -m &quot;Fix a bug in ...&quot;
 git diff debug &gt; xxx.patch(任意patch名)
 
 ## 提交xxx.patch文件到讨论区
-</code></pre><h2 id="评分说明">评分说明</h2>
+</code></pre><h2 id="其他说明">其他说明</h2>
 <ol>
 <li>时间规范</li>
 </ol>
@@ -346,7 +338,7 @@ git diff debug &gt; xxx.patch(任意patch名)
 </ol>
 <p>各位同学一定<strong>不要将本次实验</strong>放到公共仓库上。</p>
 <hr>
-<p><em><small>last update at: 2022/3/11 17:49:02</small></em></p>
+<p><em><small>last update at: 2022/3/11 19:30:57</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -390,12 +382,12 @@ git diff debug &gt; xxx.patch(任意patch名)
 
             
                 
-                <a href="./" class="navigation navigation-prev " aria-label="Previous page: 实验框架">
+                <a href="test.html" class="navigation navigation-prev " aria-label="Previous page: 测试说明">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="test.html" class="navigation navigation-next " aria-label="Next page: 测试说明">
+                <a href="lab1.html" class="navigation navigation-next " aria-label="Next page: lab 1: 记录管理">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -406,7 +398,7 @@ git diff debug &gt; xxx.patch(任意patch名)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"重要声明","level":"1.2","depth":1,"next":{"title":"测试说明","level":"1.3","depth":1,"path":"test.md","ref":"test.md","articles":[]},"previous":{"title":"实验框架","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"intro.md","mtime":"2022-03-11T11:17:25.080Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-11T11:17:34.081Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"实验说明","level":"1.3","depth":1,"next":{"title":"lab 1: 记录管理","level":"2.1","depth":1,"path":"lab1.md","ref":"lab1.md","articles":[]},"previous":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"intro.md","mtime":"2022-03-11T11:30:49.547Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-11T11:30:58.724Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
