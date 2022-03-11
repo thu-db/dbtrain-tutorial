@@ -15,6 +15,12 @@
 1. record 模块：需要理解Record和Field的基本函数，同时实现Record的存储和加载函数。
 2. table 模块：需要理解Table的基本函数，在实验中不要求处理数据表元信息(TableMeta)。重点关注于通过PageHandle在定长的页面中组织记录数据。
 
+## 基础功能实现顺序
+1. table/table_meta.cpp: TableMeta的序列化和反序列化
+2. record/record_factory.cpp: 字段Field和记录Record的序列化和反序列化
+3. table/page_handle.cpp: 页面内的记录插入、更新、删除
+4. table/table.cpp: 上层记录插入、更新、删除的接口函数
+
 ## 可选高级功能
 
 不要求将高级功能集成到主分支中，建议单开分支完成实验。但是建议同学们设计验证自己实验结果的测例并给出测试的可视化结果展示。
