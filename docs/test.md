@@ -4,7 +4,7 @@
 
 本实验依赖 cmake, make, g++ 构建工具，解析器编译需要 flex 和 bison 工具，需先在本地环境安装这些依赖。
 
-由于实验框架底层文件操作调用了 Unix 相关接口，故不支持 Windows 环境，Windows 用户建议使用 WSL，也可以使用 Virtualbox 或 VMWare 开一个 Ubuntu 虚拟机，然后参考下面的 Ubuntu 环境配置。
+由于实验框架底层文件操作调用了 Unix 相关接口，故不支持 Windows 环境，Windows 用户建议使用 WSL，或使用 Virtualbox 或 VMWare 开一个 Ubuntu 虚拟机，然后参考下面的 Ubuntu 环境配置。
 
 ### Ubuntu 环境配置
 
@@ -64,6 +64,8 @@ mv dbtrain-lab-xxxxxxxxx dbtrain-lab
 │   ├── ...
 └── ...
 ```
+
+之后每次实验测试仓库都会更新，开始新实验前请先通过`git pull`命令更新测试仓库。
 
 ### 编译实验框架
 
