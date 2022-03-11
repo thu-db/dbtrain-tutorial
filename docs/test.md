@@ -137,7 +137,7 @@ name | STRING | 4
 score | FLOAT | 8
 ```
 
-该参数主要用于方便测试脚本进行结果比对，你在本地测试时无需使用该参数。
+该参数主要用于方便测试脚本进行结果比对，你在本地与数据库交互时无需使用该参数。
 
 ## 测试脚本使用方法
 
@@ -163,7 +163,9 @@ dbtrain-lab-test
 └── test.sh
 ```
 
-`check.py` 为测试脚本，在第 1 次实验中，该脚本会通过 `../dbtrain-lab/build/bin/main -s` 命令运行数据库，枚举 lab1/test 目录下的所有文件，将这些文件按照序号从小到大的顺序输入数据库。同时脚本会在 lab1 文件夹下建立 tmp 文件夹，将数据库的标准输出重定向到 tmp 文件夹下的文件中，最后将 tmp 文件夹的文件与 result 文件夹的文件内容进行对比，文件内容一致即通过测试。
+`test.sh`是为 CI 准备的脚本，本地测试不会用到它。
+
+`check.py` 为测试脚本，在第 1 次实验中，该脚本会通过 `../dbtrain-lab/build/bin/main -s` 命令运行数据库，枚举 lab1/test 目录下的所有文件，将这些文件按照序号从小到大的顺序依次输入数据库。同时脚本会在 lab1 文件夹下建立 tmp 文件夹，将数据库的标准输出重定向到 tmp 文件夹下的文件中，最后将 tmp 文件夹的文件与 result 文件夹的文件内容进行对比，文件内容一致即通过测试。
 
 由于标准错误 stderr 不会被重定向到文件中，因此你可以在实验代码中使用 cerr 输出调试信息，cerr 输出的信息不会影响测试结果。
 
@@ -229,10 +231,10 @@ Expected:
 3
 Got:
 1
-Test 30_multi_pages FAILED
+Test 30_long_text FAILED
 ```
 
-测试 30_multi_pages 的第 20 条 SQL 期望输出 3 行，实际输出 1 行。
+测试 30_long_text 的第 20 条 SQL 期望输出 3 行，实际输出 1 行。
 
 3.结果错误：
 
@@ -246,7 +248,7 @@ age | INT | 12884901892
 Test 00_setup FAILED
 ```
 
-第 14 条 SQL 输出结果与期望输出不一致，可在 result 文件中查看第 14 条 SQL 及对应输出。
+测试 00_setup 的第 14 条 SQL 输出结果与期望输出不一致，可在 result 文件中查看第 14 条 SQL 及对应输出。
 
 4.异常退出：
 
@@ -262,6 +264,6 @@ UnicodeDecodeError: 'utf-8' codec can't decode byte 0x96 in position 347: invali
 Test 40_many_rows FAILED
 ```
 
-脚本运行错误，根据报错信息，推测是由于输出文件中包含异常字符导致。
+脚本运行错误，具体原因需根据报错信息推测，本示例中是由于输出文本中包含异常字符导致运行错误。
 
 {% include "/footer.md" %}
