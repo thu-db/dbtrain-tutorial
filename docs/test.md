@@ -115,4 +115,51 @@ dbtrain> show databases;
 dbtrain> 
 ```
 
-通过 ctrl+c 或 ctrl+d 即可退出数据库交互界面
+通过 ctrl+c 或 ctrl+d 即可退出数据库交互界面。
+
+数据库交互程序支持`-s`参数，该参数用于控制结果打印格式，加上该参数后将只打印必要字段，不打印表格框：
+
+```
+$ ./bin/main -s
+dbtrain> use test;
+SUCCESS
+
+dbtrain> create table t(id int, name char(4), score float);
+SUCCESS
+
+dbtrain> desc t;
+Name | Type | Length
+id | INT | 4
+name | STRING | 4
+score | FLOAT | 8
+```
+
+该参数主要用于方便测试脚本进行结果比对，你在本地测试时无需使用该参数。
+
+## 测试脚本使用方法
+
+测试仓库目录结构如下：
+
+```
+dbtrain-lab-test
+├── README.md
+├── check.py
+├── lab1
+│   ├── result
+│   │   ├── 00_setup.result
+│   │   ├── 10_basic.result
+│   │   ├── 20_error.result
+│   │   ├── 30_long_text.result
+│   │   └── 40_many_rows.result
+│   └── test
+│       ├── 00_setup.sql
+│       ├── 10_basic.sql
+│       ├── 20_error.sql
+│       ├── 30_long_text.sql
+│       └── 40_many_rows.sql
+└── test.sh
+```
+
+`check.py`为测试脚本，在第 1 次实验中，该脚本会通过 `../dbtrain-lab/build/bin/main -s`命令运行数据库，枚举 lab1/test 目录下的所有文件，将这些文件按照序号从小到大的顺序输入数据库。同时脚本会在 lab1 文件夹下建立 tmp 文件夹，将数据库的标准输出重定向到 tmp 文件夹下的文件中，最后将 tmp 文件夹的文件与 result 文件夹的文件内容进行对比，文件内容一致即通过测试。
+
+`test.sh`是为 CI 准备的脚本，本地测试不会用到它。
