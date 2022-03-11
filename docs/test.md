@@ -28,6 +28,7 @@ brew install cmake flex bison
 g++ -v
 flex --version
 bison --version
+cmake --version
 ```
 
 ## 运行实验框架
@@ -164,6 +165,8 @@ dbtrain-lab-test
 
 `check.py` 为测试脚本，在第 1 次实验中，该脚本会通过 `../dbtrain-lab/build/bin/main -s` 命令运行数据库，枚举 lab1/test 目录下的所有文件，将这些文件按照序号从小到大的顺序输入数据库。同时脚本会在 lab1 文件夹下建立 tmp 文件夹，将数据库的标准输出重定向到 tmp 文件夹下的文件中，最后将 tmp 文件夹的文件与 result 文件夹的文件内容进行对比，文件内容一致即通过测试。
 
+由于标准错误 stderr 不会被重定向到文件中，因此你可以在实验代码中使用 cerr 输出调试信息，cerr 输出的信息不会影响测试结果。
+
 脚本默认会运行 test 目录下的所有文件，你可以通过 `-u` 或 `--until` 参数控制脚本运行的文件，如 `python3 check.py -u 10` 将只会运行 00 和 10 两个测试文件。
 
 ### result 文件格式说明
@@ -204,7 +207,7 @@ Test 40_many_rows PASSED
 
 测试失败分为如下几种情况：
 
-1. 结果数目错误：
+1.结果数目错误：
 
 ```
 Incorrect number of results
@@ -217,7 +220,7 @@ Test 00_setup FAILED
 
 测试 00_setup 中共 25 条 SQL，期望输出 26 个结果（包括退出数据库时输出的 Bye），但实际只输出了 23 个结果，可查看是否有某些 SQL 运行失败导致没有输出结果。
 
-2. 结果行数错误：
+2.结果行数错误：
 
 ```
 SQL 20
@@ -231,7 +234,7 @@ Test 30_multi_pages FAILED
 
 测试 30_multi_pages 的第 20 条 SQL 期望输出 3 行，实际输出 1 行。
 
-3. 结果错误：
+3.结果错误：
 
 ```
 SQL 14
@@ -245,7 +248,7 @@ Test 00_setup FAILED
 
 第 14 条 SQL 输出结果与期望输出不一致，可在 result 文件中查看第 14 条 SQL 及对应输出。
 
-4. 异常退出：
+4.异常退出：
 
 ```
 Traceback (most recent call last):
