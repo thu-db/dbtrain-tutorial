@@ -50,6 +50,10 @@ mv dbtrain-lab-xxxxxxxxx dbtrain-lab
 
 在**同一文件夹**下，使用 git clone 命令拉取测试仓库。
 
+```bash
+git clone git@git.tsinghua.edu.cn:dbtrain/2022/dbtrain-lab-test.git
+```
+
 测试仓库应与实验仓库在同一父文件夹下，目录结构应为：
 
 ```
