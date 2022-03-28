@@ -1,4 +1,4 @@
-# LAB 2 记录管理实验文档
+# LAB 2 日志管理实验文档
 
 ## 实验概述
 
@@ -19,31 +19,50 @@
 
 ## 基础功能实现顺序
 
-1. log/checkpoint_log.cpp: Checkpoint日志的设计，与其他日志不同之处在于，Checkpoint日志在Load过程中需要将数据更新到LogManager的成员变量，完成加载过程。
-2. table/table.cpp: 在LAB 1代码基础上添加记录WAL日志得到过程。
-3. log/manager_log.cpp: 首先完成3中基本操作(INSERT/DELETE/UPDATE)的日志记录过程。
-4. log/log_image.cpp: Update日志镜像的设计，实现物理逻辑日志的序列化和反序列化
-5. update/update_log.cpp: 基于日志镜像完成Redo和Undo的具体操作。
-6. log/manager_log.cpp: 完成故障恢复算法，实现Analyse，Redo，Undo三个函数。
+1. table/table.cpp: 在LAB 1代码基础上添加记录WAL日志的过程。
+2. log/log_manager.cpp: 首先完成三种基本操作(INSERT/DELETE/UPDATE)的日志记录过程。
+3. log/log_image.cpp: Update日志镜像的设计，实现物理逻辑日志的序列化和反序列化。
+4. log/update_log.cpp: 基于日志镜像完成Redo和Undo的具体操作。
+5. log/checkpoint_log.cpp: Checkpoint日志的设计，与其他日志不同之处在于，Checkpoint日志在Load过程中需要将数据更新到LogManager的成员变量，完成加载过程。
+6. log/log_manager.cpp: 完成故障恢复算法，实现 Redo 和 Undo 函数。
 
-## 基本测试限制
+## 测试说明
 
-本次实验中，基本测试为简单的测试样例，没有包含复杂的故障恢复场景，仅考虑完成基本功能的同学不需要考虑如下场景：
-1. 日志在Undo或Redo过程会影响TableMeta对应的操作
-2. 日志在Undo或Redo过程会影响PageHeader.next_free的操作
-3. 插入导致新的页面分配后出现故障，导致Redo过程中页面缺失的场景
-4. 更多复杂的特殊场景
+本次实验新增了 begin, abort, commit, checkpoint, crash, flush 相关语法：
 
-本次实验的基本测试具有一定局限性，主要是为了考虑同学们工作量进行了简化。但是希望同学们能发掘更多的场景，探索在这些场景下恢复算法的应对策略。这也是本次实验高级功能的一个选择。
+* begin, abort, commit 分别对应事务的开始、回滚和提交。
 
+* checkpoint 使系统写入一个检查点。
+
+* crash 模拟系统故障崩溃，调用 BufferManager 的 Clear 函数清空缓冲区所有内容。
+
+* flush 调用 BufferManager 的 FlushAll 函数将缓冲区内容同步到磁盘。
+
+**不要修改 visitor 中 flush 和 crash 相关函数的代码**
+
+本次实验中，基本测试为简单的测试样例，没有包含复杂的故障恢复场景，仅考虑完成基本功能的同学**不需要**考虑如下场景的故障恢复：
+
+1. 修改 TableMeta 后出现故障的场景。
+2. 修改 PageHeader.next_free 后出现故障的场景。
+3. 插入记录导致新的页面分配后，系统出现故障，导致 redo 过程中页面缺失的场景。
+
+本次实验的基本测试具有一定局限性，但是希望同学们能发掘更多的场景，探索在这些场景下恢复算法的应对策略。这也是本次实验高级功能的一个选择。
 
 ## 可选高级功能
 
 不要求将高级功能集成到主分支中，建议单开分支完成实验。但是建议同学们设计验证自己实验结果的测例并给出测试的可视化结果展示。
 
-1. 复杂的日志恢复场景(Max 2)：给出能够适应复杂场景的日志恢复算法（有额外测例对应于基本测例限制（1）-（3），价值1）
-2. 无中断的Checkpoint日志记录(Max 1)：需要拆分Checkpoint日志，需要自行添加额外测例
-3. Undo过程中系统异常的恢复(Max 1)：此处需要添加CLR日志，需要自行添加额外测例
-4. 日志缓存(Max 1)：添加日志缓存机制，同时修改现有的数据缓存替换算法，利用FlushedLSN限制可写回的数据页面，需要自行添加额外测例
+1. 复杂的日志恢复场景(2分)：实现能够适应复杂场景的日志恢复算法，解决基本测试的三点局限性，需要自行添加额外测例。
+2. 无中断的Checkpoint日志记录(1分)：需要将Checkpoint日志拆分为 begin_checkpoint 和 end_checkpoint，单开线程进行 checkpoint 写入操作，写入checkpoint 时不阻塞 SQL 的正常运行，需要自行添加额外测例。
+3. Undo过程中系统出现异常的恢复(1分)：此处需要添加CLR日志，需要自行添加额外测例。
+4. 日志缓存(2分)：添加日志缓存机制，同时修改现有的数据缓存替换算法，利用FlushedLSN限制可写回的数据页面，需要自行添加额外测例。
 
 同时也鼓励同学们结合相关课程内容提出自己的创新设计。实验框架对于本次实验的几个高级功能有相对良好的支持，各个高级功能都比较容易完整实现，所以同学们可以选择同时支持多个高级功能来实现更为完整的基于日志的故障恢复算法。
+
+高级功能满分3分。
+
+## 截止时间
+
+2022年4月10日（第七周周日）晚23:59分。
+
+{% include "/footer.md" %}
