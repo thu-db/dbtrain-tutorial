@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>实验框架 · dbs-tutorial</title>
+        <title>lab 2: 日志管理 · dbs-tutorial</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.7.1">
@@ -100,8 +100,8 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="test.html" />
     
+    <link rel="prev" href="lab1.html" />
     
 
     </head>
@@ -132,7 +132,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -191,7 +191,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2" data-path="lab2.html">
+        <li class="chapter active" data-level="2.2" data-path="lab2.html">
             
                 <a href="lab2.html">
             
@@ -234,7 +234,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >实验框架</a>
+        <a href="." >lab 2: 日志管理</a>
     </h1>
 </div>
 
@@ -252,69 +252,65 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <html><head></head><body><h1 id="实验框架整体设计说明">实验框架整体设计说明</h1>
-<h2 id="层级划分">层级划分</h2>
-<p>实验框架设计上的整体架构按照各次实验内容进行了层次划分，从底层的操作系统级别的页式文件管理到顶层的SQL命令行交互，主要可以划分为如下的层级结构。  </p>
-<p align="center">
-    <img src="pics/层次化结构设计.svg">
-</p>
-
-<p>上述图片中模块后编号表示对应的实验编号。
-此处按照实验设计的顺序简单介绍各个模块的主要功能：</p>
+                                <html><head></head><body><h1 id="lab-2-日志管理实验文档">LAB 2 日志管理实验文档</h1>
+<h2 id="实验概述">实验概述</h2>
+<p>本次实验主要关注于数据库系统的日志记录及故障恢复功能，希望同学们通过本次实验能够更好地理解数据库日志的记录方式以及日志对于故障恢复过程的作用。重点关注于简化的ARIES算法的实现，以及日志记录和管理的方式。</p>
+<h2 id="实验任务">实验任务</h2>
+<p>本次实验主要有3个任务：</p>
 <ol>
-<li>缓存和磁盘：底层缓存和磁盘管理，支持UNIX操作系统（Linux+Mac），不支持Windows操作系统。</li>
-<li>日志：仅负责存储日志信息。</li>
-<li>记录管理：负责数据库系统中关系内记录的管理，实现了对于表(Table)，记录(Record)，以及字段(Field)等数据库系统基本组成部分的抽象，同时负责处理这些基本组成部分的到实际物理页面的序列化和反序列化。</li>
-<li>事务管理：负责日志的解析以及在基于日志的自动恢复等操作，需要负责处理事务重做和事务回滚。</li>
-<li>执行器：基于火山模型设计的简单执行器，基于上层给出的执行计划树完成查询的实际执行过程。</li>
-<li>优化器：接收解析器的语法分析树，经过逻辑优化和物理优化过程转化为执行计划树。</li>
-<li>并发控制：负责多个事务并发进行情况下的执行过程控制，管理锁和记录的多版本信息。</li>
-<li>解析器：SQL语法解析，将原始SQL转化为语法分析树。</li>
-<li>前端命令行：负责用户交互，实时接收SQL语句输入并给出查询结果的输出</li>
+<li>阅读新增的代码，理解日志记录的过程。</li>
+<li>补全未完成的日志设计：Update日志镜像的部分函数以及Checkpoint日志的部分函数。</li>
+<li>完成简化的ARIES算法：本次实验下仅要求支持单线程场景。</li>
 </ol>
-<h2 id="sql整体运行流程">SQL整体运行流程</h2>
-<p><img src="pics/工作流程.svg" alt="workflow"> </p>
-<p>如图所示，系统整体的工作流程主要可以概括为如下几个子过程：</p>
+<h2 id="相关模块">相关模块</h2>
 <ol>
-<li>SQL解析：将原始SQL查询语句转化为抽象语法树</li>
-<li>优化器：对于抽象语法树进行逻辑优化和物理优化过程，生成执行计划树</li>
-<li>执行器：按照火山模型完成执行计划树，通过不同算子实现对于页面数据的访问和修改</li>
+<li>tx 模块：事务管理模块，负责事务ID的管理，维护线程ID与事务的XID的对应关系。本次实验中<strong>不需要重点关注</strong>。</li>
+<li>log 模块：日志管理模块，负责处理日志记录以及故障恢复功能。是本次实验需要重点关注的部分，尤其是LogManager模块中包含了本次实验的绝大部分内容。</li>
+<li>table 模块：在LAB 1代码基础上添加记录WAL日志得到过程。</li>
 </ol>
-<h2 id="功能模块划分">功能模块划分</h2>
-<p>实验框架的源代码按照功能模块进行组织，此处按照各次实验中涉及的各个功能模块进行简单介绍：</p>
-<h3 id="lab-1-记录管理">LAB 1 记录管理</h3>
-<h4 id="record-模块">record 模块</h4>
-<p>实现了记录(Record)和字段(Field)类型，实现了包括反序列化(Load)、序列化(Store)等基本函数。</p>
-<h4 id="table-模块">table 模块</h4>
-<p>实现了表(Table)类型，表结构包含表的元信息(TableMeta)以及页面文件组成的实际存储数据。通过PageHanlde类可以实现物理页面的无格式数据到格式化记录的转化和操作。同时，可以通过配置隐藏列的方式向数据表中存储声明字段外的额外字段、例如后续实验中需要使用的记录标识(RID)、版本号(VERSION)、锁状态(WR_LOCK)等。</p>
-<h3 id="lab-2-事务与日志">LAB 2 事务与日志</h3>
-<h4 id="log-模块">log 模块</h4>
-<p>实现了日志(Log)的序列化和解析，采用物理日志的方式记录数据变化。管理事务的REDO和UNDO过程。同时需要管理日志数据的组织和持久化过程，对于LAB 1实验没有影响。</p>
-<h4 id="storage-模块">storage 模块</h4>
-<p>底层缓存、磁盘的管理，由于缓存数据保存在内存中，需要结合日志模块以及磁盘保证写入数据的持久性。</p>
-<h3 id="lab-3-执行器">LAB 3 执行器</h3>
-<h4 id="exec-模块">exec 模块</h4>
-<p>执行器模块，包装了简单的执行器模型。对于每个事务建立新的执行器并记录基本的元信息，管理算子实际执行过程。</p>
-<h4 id="oper-模块">oper 模块</h4>
-<p>实现了抽象类算子结点(OperNode)，算子结点组织成树结构可以构成执行计划树，通过实现不同算子结点的Next函数，可以实现以向量化模型为基础的执行引擎。</p>
-<h3 id="lab-4-优化器">LAB 4 优化器</h3>
-<h4 id="optim-模块">optim 模块</h4>
-<p>实现了优化器(Optimizor)，对于上层visitor解析的抽象语法树进行逻辑优化和物理优化两个过程，形成高效的执行计划交由底层执行引擎进行处理。</p>
-<h3 id="lab-5-并发控制">LAB 5 并发控制</h3>
-<p>整体性的功能添加，本次实验中没有设计单独的独立功能模块。</p>
-<h3 id="其余模块">其余模块</h3>
-<h4 id="utils-模块">utils 模块</h4>
-<p>一些常用的数据结构，此处给出了并查集(UFSet)以及位图(Bitmap)。</p>
-<h4 id="result-模块">result 模块</h4>
-<p>用于前端输出，包含记录头和记录内容。</p>
-<h4 id="system-模块">system 模块</h4>
-<p>数据库管理模块，主要实现了元信息的管理。</p>
-<h4 id="parser-模块">parser 模块</h4>
-<p>解析器模块，将SQL语句转化为抽象语法树。</p>
-<h4 id="extra">Extra</h4>
-<p>cli.cpp为主程序入口。defines.h是通用头文件，可以将常量值和常用的类型声明置于该文件内。</p>
+<h2 id="基础功能实现顺序">基础功能实现顺序</h2>
+<ol>
+<li>table/table.cpp: 在LAB 1代码基础上添加记录WAL日志的过程。</li>
+<li>log/log_manager.cpp: 首先完成三种基本操作(INSERT/DELETE/UPDATE)的日志记录过程。</li>
+<li>log/log_image.cpp: Update日志镜像的设计，实现物理逻辑日志的序列化和反序列化。</li>
+<li>log/update_log.cpp: 基于日志镜像完成Redo和Undo的具体操作。</li>
+<li>log/checkpoint_log.cpp: Checkpoint日志的设计，与其他日志不同之处在于，Checkpoint日志在Load过程中需要将数据更新到LogManager的成员变量，完成加载过程。</li>
+<li>log/log_manager.cpp: 完成故障恢复算法，实现 Redo 和 Undo 函数。</li>
+</ol>
+<h2 id="测试说明">测试说明</h2>
+<p>本次实验新增了 begin, abort, commit, checkpoint, crash, flush 相关语法：</p>
+<ul>
+<li><p>begin, abort, commit 分别对应事务的开始、回滚和提交。</p>
+</li>
+<li><p>checkpoint 使系统写入一个检查点。</p>
+</li>
+<li><p>crash 模拟系统故障崩溃，调用 BufferManager 的 Clear 函数清空缓冲区所有内容。</p>
+</li>
+<li><p>flush 调用 BufferManager 的 FlushAll 函数将缓冲区内容同步到磁盘。</p>
+</li>
+</ul>
+<p><strong>不要修改 visitor 中 flush 和 crash 相关函数的代码</strong></p>
+<p>本次实验中，基本测试为简单的测试样例，没有包含复杂的故障恢复场景，仅考虑完成基本功能的同学<strong>不需要</strong>考虑如下场景的故障恢复：</p>
+<ol>
+<li>修改 TableMeta 后出现故障的场景。</li>
+<li>修改 PageHeader.next_free 后出现故障的场景。</li>
+<li>插入记录导致新的页面分配后，系统出现故障，导致 redo 过程中页面缺失的场景。</li>
+</ol>
+<p>本次实验的基本测试具有一定局限性，但是希望同学们能发掘更多的场景，探索在这些场景下恢复算法的应对策略。这也是本次实验高级功能的一个选择。</p>
+<h2 id="可选高级功能">可选高级功能</h2>
+<p>不要求将高级功能集成到主分支中，建议单开分支完成实验。但是建议同学们设计验证自己实验结果的测例并给出测试的可视化结果展示。</p>
+<ol>
+<li>复杂的日志恢复场景(2分)：实现能够适应复杂场景的日志恢复算法，解决基本测试的三点局限性，需要自行添加额外测例。</li>
+<li>无中断的Checkpoint日志记录(1分)：需要将Checkpoint日志拆分为 begin_checkpoint 和 end_checkpoint，单开线程进行 checkpoint 写入操作，写入checkpoint 时不阻塞 SQL 的正常运行，需要自行添加额外测例。</li>
+<li>Undo过程中系统出现异常的恢复(1分)：此处需要添加CLR日志，需要自行添加额外测例。</li>
+<li>日志缓存(2分)：添加日志缓存机制，同时修改现有的数据缓存替换算法，利用FlushedLSN限制可写回的数据页面，需要自行添加额外测例。</li>
+</ol>
+<p>同时也鼓励同学们结合相关课程内容提出自己的创新设计。实验框架对于本次实验的几个高级功能有相对良好的支持，各个高级功能都比较容易完整实现，所以同学们可以选择同时支持多个高级功能来实现更为完整的基于日志的故障恢复算法。</p>
+<p>高级功能满分3分。</p>
+<h2 id="截止时间">截止时间</h2>
+<p>2022年4月10日（第七周周日）晚23:59分。</p>
 <hr>
-<p><em><small>last update at: 2022/3/11 19:46:29</small></em></p>
+<p><em><small>last update at: 2022/3/29 01:12:26</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -358,10 +354,10 @@
 
             
                 
-                
-                <a href="test.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 测试说明">
-                    <i class="fa fa-angle-right"></i>
+                <a href="lab1.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: lab 1: 记录管理">
+                    <i class="fa fa-angle-left"></i>
                 </a>
+                
                 
             
         
@@ -370,7 +366,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"实验框架","level":"1.1","depth":1,"next":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"README.md","mtime":"2022-03-28T17:12:18.602Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-28T17:12:27.845Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"lab 2: 日志管理","level":"2.2","depth":1,"previous":{"title":"lab 1: 记录管理","level":"2.1","depth":1,"path":"lab1.md","ref":"lab1.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab2.md","mtime":"2022-03-28T17:12:18.602Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-03-28T17:12:27.845Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
