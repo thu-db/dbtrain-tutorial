@@ -119,7 +119,7 @@ RecordList 为由多个 Record 指针组成的数组，Record 类由 Field 指�
 
 返回 Result 结果后，cli 函数通过 printer->Print(&result) 将结果打印出来，一条 SQL 的运行就结束了。
 
-如需了解 Insert, Delete, Update, Select 等语句的运行过程，可查看 parser/visitor.cpp 中对应的 visit 函数，这些语句运行过程中可能需要 Preprocessor 类为 SQL 中的列添加对应的表，也会通过 Optimizer 构造相应的算子节点和查询计划，具体代码位于 optim 和 oper 两个文件夹下，**实验 1 需要重点关注 oper/scan.cpp 中的 TableScan 节点的实现**。
+如需了解 Insert, Delete, Update, Select 等语句的运行过程，可查看 parser/visitor.cpp 中对应的 visit 函数，这些语句运行过程中可能需要 Preprocessor 类为 SQL 中的列添加对应的表，也会通过 Optimizer 构造相应的算子节点和查询计划，具体代码位于 optim 和 oper 两个文件夹下，**实验 1 需要重点关注 oper/scan_node.cpp 中的 TableScan 节点的实现**。
 
 建议同学们开始实验前首先阅读代码，充分了解不同 SQL 的运行过程，然后再填充缺失代码，了解实验框架也会为理解之后的实验带来帮助。
 
