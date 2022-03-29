@@ -18,4 +18,4 @@ apt install git ca-certificates make cmake g++ flex bison libreadline-dev python
 bash prepare.sh
 ```
 
-详细环境配置与测试流程参见[文档](https://thu-db.github.io/dbtrain-tutorial/test.html)
+详细环境配置与测试流程见[文档](https://thu-db.github.io/dbtrain-tutorial/test.html)
