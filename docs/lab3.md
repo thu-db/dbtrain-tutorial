@@ -20,15 +20,15 @@
 
 ## 可选高级功能
 
-1. 实现多种 join 算法(2分)：至少实现三种不同的连接算法，如 Nested Loop Join, Sort Merge Join, Hash Join，设计测例比较不同算法的效率。
+1. 实现多种 join 算法(1分)：至少实现三种不同的连接算法，如 Nested Loop Join, Sort Merge Join, Hash Join，设计测例比较不同算法的效率。
 2. 基于外存的 join 算子(2分)：至少实现一种外存算法，如外存哈希、外存排序归并等。
-3. 聚合算子的实现(3分)：实现 SUM, AVG, MIN, MAX, COUNT 算子，设计测例验证正确性。
+3. 聚合算子的实现(2分)：实现 SUM, AVG, MIN, MAX, COUNT 算子，设计测例验证正确性。
 
 高级功能满分 3 分。
 
 ## 实现要点
 
-1. 对于多个 AND 或 OR 连接的条件，解析器会将条件解析为左深树，即所有 AND 结点的右孩子为比较条件或连接条件。
+1. 对于多个 AND 或 OR 连接的条件，解析器会将条件解析为左深树，即所有 AND 结点的右孩子均为比较条件或连接条件，不会是其他 AND OR 条件。
 
 2. 所有 visit 函数必须具有返回值，如不需要返回值可返回 nullptr，没有返回值可能出现 Segmentation fault。
 
