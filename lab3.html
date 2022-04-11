@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>实验框架 · dbs-tutorial</title>
+        <title>lab 3: 执行器 · dbs-tutorial</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.7.1">
@@ -100,8 +100,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="test.html" />
+    <link rel="next" href="faq.html" />
     
+    
+    <link rel="prev" href="lab2.html" />
     
 
     </head>
@@ -132,7 +134,7 @@
         
         
     
-        <li class="chapter active" data-level="1.1" data-path="./">
+        <li class="chapter " data-level="1.1" data-path="./">
             
                 <a href="./">
             
@@ -204,7 +206,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="lab3.html">
+        <li class="chapter active" data-level="2.3" data-path="lab3.html">
             
                 <a href="lab3.html">
             
@@ -267,7 +269,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >实验框架</a>
+        <a href="." >lab 3: 执行器</a>
     </h1>
 </div>
 
@@ -285,69 +287,22 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <html><head></head><body><h1 id="实验框架整体设计说明">实验框架整体设计说明</h1>
-<h2 id="层级划分">层级划分</h2>
-<p>实验框架设计上的整体架构按照各次实验内容进行了层次划分，从底层的操作系统级别的页式文件管理到顶层的SQL命令行交互，主要可以划分为如下的层级结构。  </p>
-<p align="center">
-    <img src="pics/层次化结构设计.svg">
-</p>
-
-<p>上述图片中模块后编号表示对应的实验编号。
-此处按照实验设计的顺序简单介绍各个模块的主要功能：</p>
+                                <html><head></head><body><h1 id="lab-3-执行器实验文档">LAB 3 执行器实验文档</h1>
+<h2 id="实验概述">实验概述</h2>
+<p>本次实验主要关注于 SQL 执行流程，重点为 join 算子的实现，理解数据库执行引擎的工作原理。</p>
+<h2 id="实验任务">实验任务</h2>
 <ol>
-<li>缓存和磁盘：底层缓存和磁盘管理，支持UNIX操作系统（Linux+Mac），不支持Windows操作系统。</li>
-<li>日志：仅负责存储日志信息。</li>
-<li>记录管理：负责数据库系统中关系内记录的管理，实现了对于表(Table)，记录(Record)，以及字段(Field)等数据库系统基本组成部分的抽象，同时负责处理这些基本组成部分的到实际物理页面的序列化和反序列化。</li>
-<li>事务管理：负责日志的解析以及在基于日志的自动恢复等操作，需要负责处理事务重做和事务回滚。</li>
-<li>执行器：基于火山模型设计的简单执行器，基于上层给出的执行计划树完成查询的实际执行过程。</li>
-<li>优化器：接收解析器的语法分析树，经过逻辑优化和物理优化过程转化为执行计划树。</li>
-<li>并发控制：负责多个事务并发进行情况下的执行过程控制，管理锁和记录的多版本信息。</li>
-<li>解析器：SQL语法解析，将原始SQL转化为语法分析树。</li>
-<li>前端命令行：负责用户交互，实时接收SQL语句输入并给出查询结果的输出</li>
+<li>完成 AndConditionNode 和 OrConditionNode 的构建过程。</li>
+<li>实现 JoinNode 的构建和执行过程。</li>
 </ol>
-<h2 id="sql整体运行流程">SQL整体运行流程</h2>
-<p><img src="pics/工作流程.svg" alt="workflow"> </p>
-<p>如图所示，系统整体的工作流程主要可以概括为如下几个子过程：</p>
+<p>实验开始前，请按照文档<a href="https://thu-db.github.io/dbtrain-tutorial/intro.html#%E6%9B%B4%E6%96%B0%E8%AF%B4%E6%98%8E" target="_blank">更新说明</a>中的步骤合并新增代码。</p>
+<h2 id="基础功能实现顺序">基础功能实现顺序</h2>
 <ol>
-<li>SQL解析：将原始SQL查询语句转化为抽象语法树</li>
-<li>优化器：对于抽象语法树进行逻辑优化和物理优化过程，生成执行计划树</li>
-<li>执行器：按照火山模型完成执行计划树，通过不同算子实现对于页面数据的访问和修改</li>
+<li>optim/optim.cpp: 实现 AndConditionNode 和 OrConditionNode 的 visitor 函数。</li>
+<li>optim/optim.cpp:</li>
+<li>optim/optim.cpp:</li>
+<li>oper/join_node.cpp:</li>
 </ol>
-<h2 id="功能模块划分">功能模块划分</h2>
-<p>实验框架的源代码按照功能模块进行组织，此处按照各次实验中涉及的各个功能模块进行简单介绍：</p>
-<h3 id="lab-1-记录管理">LAB 1 记录管理</h3>
-<h4 id="record-模块">record 模块</h4>
-<p>实现了记录(Record)和字段(Field)类型，实现了包括反序列化(Load)、序列化(Store)等基本函数。</p>
-<h4 id="table-模块">table 模块</h4>
-<p>实现了表(Table)类型，表结构包含表的元信息(TableMeta)以及页面文件组成的实际存储数据。通过PageHandle类可以实现物理页面的无格式数据到格式化记录的转化和操作。同时，可以通过配置隐藏列的方式向数据表中存储声明字段外的额外字段、例如后续实验中需要使用的记录标识(RID)、版本号(VERSION)、锁状态(WR_LOCK)等。</p>
-<h3 id="lab-2-事务与日志">LAB 2 事务与日志</h3>
-<h4 id="log-模块">log 模块</h4>
-<p>实现了日志(Log)的序列化和解析，采用物理日志的方式记录数据变化。管理事务的REDO和UNDO过程。同时需要管理日志数据的组织和持久化过程，对于LAB 1实验没有影响。</p>
-<h4 id="storage-模块">storage 模块</h4>
-<p>底层缓存、磁盘的管理，由于缓存数据保存在内存中，需要结合日志模块以及磁盘保证写入数据的持久性。</p>
-<h3 id="lab-3-执行器">LAB 3 执行器</h3>
-<h4 id="exec-模块">exec 模块</h4>
-<p>执行器模块，包装了简单的执行器模型。对于每个事务建立新的执行器并记录基本的元信息，管理算子实际执行过程。</p>
-<h4 id="oper-模块">oper 模块</h4>
-<p>实现了抽象类算子结点(OperNode)，算子结点组织成树结构可以构成执行计划树，通过实现不同算子结点的Next函数，可以实现以向量化模型为基础的执行引擎。</p>
-<h3 id="lab-4-优化器">LAB 4 优化器</h3>
-<h4 id="optim-模块">optim 模块</h4>
-<p>实现了优化器(Optimizer)，对于上层visitor解析的抽象语法树进行逻辑优化和物理优化两个过程，形成高效的执行计划交由底层执行引擎进行处理。</p>
-<h3 id="lab-5-并发控制">LAB 5 并发控制</h3>
-<p>整体性的功能添加，本次实验中没有设计单独的独立功能模块。</p>
-<h3 id="其余模块">其余模块</h3>
-<h4 id="utils-模块">utils 模块</h4>
-<p>一些常用的数据结构，此处给出了并查集(UFSet)以及位图(Bitmap)。</p>
-<h4 id="result-模块">result 模块</h4>
-<p>用于前端输出，包含记录头和记录内容。</p>
-<h4 id="system-模块">system 模块</h4>
-<p>数据库管理模块，主要实现了元信息的管理。</p>
-<h4 id="parser-模块">parser 模块</h4>
-<p>解析器模块，将SQL语句转化为抽象语法树。</p>
-<h4 id="extra">Extra</h4>
-<p>cli.cpp为主程序入口。defines.h是通用头文件，可以将常量值和常用的类型声明置于该文件内。</p>
-<hr>
-<p><em><small>last update at: 2022/3/29 01:18:57</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -391,8 +346,12 @@
 
             
                 
+                <a href="lab2.html" class="navigation navigation-prev " aria-label="Previous page: lab 2: 日志管理">
+                    <i class="fa fa-angle-left"></i>
+                </a>
                 
-                <a href="test.html" class="navigation navigation-next navigation-unique" aria-label="Next page: 测试说明">
+                
+                <a href="faq.html" class="navigation navigation-next " aria-label="Next page: FAQ">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -403,7 +362,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"实验框架","level":"1.1","depth":1,"next":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"README.md","mtime":"2022-04-11T06:30:28.177Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-11T06:30:41.295Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"lab 3: 执行器","level":"2.3","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 2: 日志管理","level":"2.2","depth":1,"path":"lab2.md","ref":"lab2.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab3.md","mtime":"2022-04-11T06:30:28.177Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-11T06:30:41.295Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
