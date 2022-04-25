@@ -360,25 +360,46 @@ t4(id int, score float): 共 100 行
                 Table Scan Node(t1):
                 Filter Node:
                     Table Scan Node(t3):
-</code></pre><pre><code>explain select t2.id from t1, t2, t3, t4 where t3.score &lt; 80.0 and t4.id = t1.id and t4.id2 = t2.id2 and t4.id = t3.id;
+</code></pre><p>此外，在连接顺序重排的过程中，需要确保两表之间存在连接条件，如对于 SQL</p>
+<pre><code>explain select t2.id from t1, t2, t3, t4 where t3.score &lt; 80.0 and t4.id = t1.id and t4.id2 = t2.id2 and t4.id = t3.id;
 </code></pre><p>虽然 t1 和 t2 是基数最小的两个表，但由于 t1 和 t2 之间没有连接条件，所以不能将 t1 和 t2 优先连接。</p>
 <h2 id="连接顺序优化示例">连接顺序优化示例</h2>
 <p>下面，结合一个简单的示例来解释连接顺序的优化过程。此处以30测例中第一条查询语句为例：</p>
 <pre><code class="lang-sql">explain <span class="hljs-keyword">select</span> t2.id <span class="hljs-keyword">from</span> t1, t2, t3, t4 <span class="hljs-keyword">where</span> t3.score <span class="hljs-operator">&lt;</span> <span class="hljs-number">80.0</span> <span class="hljs-keyword">and</span> t4.id <span class="hljs-operator">=</span> t3.id <span class="hljs-keyword">and</span> t3.id <span class="hljs-operator">=</span> t2.id <span class="hljs-keyword">and</span> t2.id <span class="hljs-operator">=</span> t1.id;
 </code></pre>
-<p>经过代价估计过程，可以得出各个表对应的执行树算子代价分别为：
-|表名|代价|
-|:---:|:---:|
-|t1|10|
-|t2|50|
-|t3|80|
-|t4|100|</p>
+<p>经过代价估计过程，可以得出各个表对应的执行树算子代价分别为：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">表名</th>
+<th style="text-align:center">代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">t1</td>
+<td style="text-align:center">10</td>
+</tr>
+<tr>
+<td style="text-align:center">t2</td>
+<td style="text-align:center">50</td>
+</tr>
+<tr>
+<td style="text-align:center">t3</td>
+<td style="text-align:center">80</td>
+</tr>
+<tr>
+<td style="text-align:center">t4</td>
+<td style="text-align:center">100</td>
+</tr>
+</tbody>
+</table>
 <p>此时，我们以表作为结点，连接关系作为边，可以生成一张无向的连接图。</p>
 <p><img src="pics/join_graph.png" alt="Join Graph"></p>
 <p>考虑到join代价估计非常困难，所以基础功能直接使用了一种非常简单的启发式算法，从最小代价结点出发依次添加相邻最小代价结点的贪心过程。</p>
 <p>实际执行过程如下：</p>
 <ol>
-<li>首先，选择虽小代价结点t1，此时邻接结点集合为{t2}，已连接结点集合为{t1}</li>
+<li>首先，选择最小代价结点t1，此时邻接结点集合为{t2}，已连接结点集合为{t1}</li>
 <li>当邻接结点集合不为空时，从邻接结点结合取出最小代价结点添加到已连接结点集合，本步骤即为取出t2，此时邻接结点集合为{}，已连接结点集合为{t1,t2}。</li>
 <li>将新添加结点的所有不在已连接集合的邻接结点加入到邻接结点集合，本步骤将添加t3，此时邻接结点集合为{t3}。</li>
 <li>重复2,3直至邻接结点集合为空。</li>
@@ -389,7 +410,7 @@ t4(id int, score float): 共 100 行
 <h2 id="截止时间">截止时间</h2>
 <p>2022年5月8日（第十一周周日）晚23:59分。</p>
 <hr>
-<p><em><small>last update at: 2022/4/25 20:37:34</small></em></p>
+<p><em><small>last update at: 2022/4/25 20:45:23</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -449,7 +470,7 @@ t4(id int, score float): 共 100 行
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"lab 4: 优化器","level":"2.4","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 3: 执行器","level":"2.3","depth":1,"path":"lab3.md","ref":"lab3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab4.md","mtime":"2022-04-25T12:37:21.052Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-25T12:37:35.349Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"lab 4: 优化器","level":"2.4","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 3: 执行器","level":"2.3","depth":1,"path":"lab3.md","ref":"lab3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab4.md","mtime":"2022-04-25T12:45:11.944Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-25T12:45:24.456Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
