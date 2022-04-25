@@ -11,6 +11,7 @@
 * [lab 1: 记录管理](lab1.md)
 * [lab 2: 日志管理](lab2.md)
 * [lab 3: 执行器](lab3.md)
+* [lab 4: 优化器](lab4.md)
 
 ## 常见问题
 
