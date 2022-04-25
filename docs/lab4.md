@@ -62,8 +62,8 @@ explain select t2.id from t1, t2, t3 where t3.id = t1.id and t3.id = t2.id and t
 ```
 Select:
 	Project Node:
-		Join Node:JOIN
-			Join Node:JOIN
+		Join Node:
+			Join Node:
 				Filter Node:
 					Table Scan Node(t3):
 				Table Scan Node(t1):
@@ -77,9 +77,9 @@ Select:
 ```
 Select:
 	Project Node:
-		Join Node:JOIN
+		Join Node:
 			Table Scan Node(t2):
-			Join Node:JOIN
+			Join Node:
 				Filter Node:
 					Table Scan Node(t3):
 				Table Scan Node(t1):
@@ -88,9 +88,9 @@ Select:
 ```
 Select:
 	Project Node:
-		Join Node:JOIN
+		Join Node:
 			Table Scan Node(t2):
-			Join Node:JOIN
+			Join Node:
 				Table Scan Node(t1):
 				Filter Node:
 					Table Scan Node(t3):
