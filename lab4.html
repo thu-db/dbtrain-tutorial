@@ -357,7 +357,7 @@
 </table>
 <p>此时，我们以表作为结点，连接关系作为边，可以生成一张无向的连接图。</p>
 <p><img src="pics/join_graph.svg" alt="Join Graph"></p>
-<p>考虑到join基数估计较为困难，所以基础功能只需使用一种非常简单的启发式算法，从最小基数结点出发依次添加相邻最小基数结点的贪心过程。</p>
+<p>考虑到join基数估计较为困难，基础功能只需使用一种非常简单的启发式算法，从最小基数结点出发依次添加相邻最小基数结点的贪心过程。</p>
 <p>实际执行过程如下：</p>
 <ol>
 <li>首先，选择最小基数结点t1，此时邻接结点集合为{t2}，已连接结点集合为{t1}</li>
@@ -422,14 +422,14 @@ t4(id int, id2 int, score float): 共 100 行
 <ol>
 <li>or转union的逻辑优化(1分)：在生成计划树过程中将or条件转化为上层union结点，需要实现UnionNode结点并完成转化过程（继承OperNode，用于合并查询结果）。</li>
 <li>投影下推的逻辑优化(2分)：将投影算子ProjectNode下推，通过尽早进行投影运算减少算子间的数据传输量。这一操作的主要难点在于提前确定需要投影的列，同时管理何时添加投影算子，以及维护下推后列对应Index的变化。注意，不是所有的投影运算都直接下降到TableScan和Filter,Join之间，有些列要求在Filter,Join后进行投影。例如：select t.a from t where t.b &lt; 1; 需要在TableScan后添加a,b的投影算子，并在Filter之后添加a的投影算子。</li>
-<li><strong>[挑战性项目]</strong> Join基数估计以及对应的逻辑优化（3分）：这一功能的正确和完整实现较为困难，建议同学们阅读有关于基数估计的相关教材内容并参考当前经典的数据库系统（PostgreSQL，MySQL等）对应功能实现文档后，仔细思考实现方法和可行性后再确定是否进行该实验。本实验要求自选一个现有的经典数据库系统，复现其有关于Join基数估计和相关逻辑优化的简化版本。</li>
+<li><strong>[挑战性项目]</strong> Join基数估计以及对应的优化（3分）：这一功能的正确和完整实现较为困难，建议同学们阅读有关于基数估计的相关教材内容并参考当前经典的数据库系统（PostgreSQL，MySQL等）对应功能实现文档后，仔细思考实现方法和可行性后再确定是否进行该实验。本实验要求自选一个现有的经典数据库系统，复现其关于Join基数估计和相关优化的简化版本。</li>
 </ol>
 <p>同时也鼓励同学们结合相关课程内容提出自己的创新设计。注意，挑战性项目难度较高，工作量较大，仅建议对数据库系统查询优化感兴趣的同学进行挑战。</p>
 <p>高级功能满分3分。</p>
 <h2 id="截止时间">截止时间</h2>
 <p>2022年5月8日（第十一周周日）晚23:59分。</p>
 <hr>
-<p><em><small>last update at: 2022/4/26 02:48:43</small></em></p>
+<p><em><small>last update at: 2022/4/26 03:47:23</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -489,7 +489,7 @@ t4(id int, id2 int, score float): 共 100 行
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"lab 4: 优化器","level":"2.4","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 3: 执行器","level":"2.3","depth":1,"path":"lab3.md","ref":"lab3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab4.md","mtime":"2022-04-25T18:48:35.243Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-25T18:48:44.595Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"lab 4: 优化器","level":"2.4","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 3: 执行器","level":"2.3","depth":1,"path":"lab3.md","ref":"lab3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab4.md","mtime":"2022-04-25T19:47:14.344Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-25T19:47:23.829Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
