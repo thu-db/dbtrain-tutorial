@@ -62,8 +62,8 @@ explain select t2.id from t1, t2, t3 where t3.id = t1.id and t3.id = t2.id and t
 ```
 Select:
 	Project Node:
-		Join Node:JOIN
-			Join Node:JOIN
+		Join Node:
+			Join Node:
 				Filter Node:
 					Table Scan Node(t3):
 				Table Scan Node(t1):
@@ -77,9 +77,9 @@ Select:
 ```
 Select:
 	Project Node:
-		Join Node:JOIN
+		Join Node:
 			Table Scan Node(t2):
-			Join Node:JOIN
+			Join Node:
 				Filter Node:
 					Table Scan Node(t3):
 				Table Scan Node(t1):
@@ -88,13 +88,15 @@ Select:
 ```
 Select:
 	Project Node:
-		Join Node:JOIN
+		Join Node:
 			Table Scan Node(t2):
-			Join Node:JOIN
+			Join Node:
 				Table Scan Node(t1):
 				Filter Node:
 					Table Scan Node(t3):
 ```
+
+此外，在连接顺序重排的过程中，需要确保两表之间存在连接条件，如对于 SQL
 
 ```
 explain select t2.id from t1, t2, t3, t4 where t3.score < 80.0 and t4.id = t1.id and t4.id2 = t2.id2 and t4.id = t3.id;
@@ -103,11 +105,15 @@ explain select t2.id from t1, t2, t3, t4 where t3.score < 80.0 and t4.id = t1.id
 虽然 t1 和 t2 是基数最小的两个表，但由于 t1 和 t2 之间没有连接条件，所以不能将 t1 和 t2 优先连接。
 
 ## 连接顺序优化示例
+
 下面，结合一个简单的示例来解释连接顺序的优化过程。此处以30测例中第一条查询语句为例：
+
 ```sql
 explain select t2.id from t1, t2, t3, t4 where t3.score < 80.0 and t4.id = t3.id and t3.id = t2.id and t2.id = t1.id;
 ```
+
 经过代价估计过程，可以得出各个表对应的执行树算子代价分别为：
+
 |表名|代价|
 |:---:|:---:|
 |t1|10|
@@ -122,7 +128,7 @@ explain select t2.id from t1, t2, t3, t4 where t3.score < 80.0 and t4.id = t3.id
 考虑到join代价估计非常困难，所以基础功能直接使用了一种非常简单的启发式算法，从最小代价结点出发依次添加相邻最小代价结点的贪心过程。
 
 实际执行过程如下：
-1. 首先，选择虽小代价结点t1，此时邻接结点集合为{t2}，已连接结点集合为{t1}
+1. 首先，选择最小代价结点t1，此时邻接结点集合为{t2}，已连接结点集合为{t1}
 2. 当邻接结点集合不为空时，从邻接结点结合取出最小代价结点添加到已连接结点集合，本步骤即为取出t2，此时邻接结点集合为{}，已连接结点集合为{t1,t2}。
 3. 将新添加结点的所有不在已连接集合的邻接结点加入到邻接结点集合，本步骤将添加t3，此时邻接结点集合为{t3}。
 4. 重复2,3直至邻接结点集合为空。
