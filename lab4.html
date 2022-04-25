@@ -302,17 +302,35 @@
                                 
                                 <html><head></head><body><h1 id="lab-4-优化器">LAB 4 优化器</h1>
 <h2 id="实验概述">实验概述</h2>
+<p>本次实验主要关注于数据库系统的查询计划优化过程，本次实验中重点关注于物理优化中的连接顺序选择。通过实现简单的基数估计算法和连接顺序选择算法，让同学们对于数据库系统中物理优化的过程有更进一步的理解。</p>
 <h2 id="实验任务">实验任务</h2>
+<p>本次实验主要有3个任务：</p>
+<ol>
+<li>实现直方图的数据结构。</li>
+<li>补全Filter算子的基数估计过程。</li>
+<li>完成Optimizor中连接顺序优化过程。</li>
+</ol>
+<p>实验开始前，请按照文档中<a href="https://thu-db.github.io/dbtrain-tutorial/intro.html#%E6%9B%B4%E6%96%B0%E8%AF%B4%E6%98%8E" target="_blank">更新说明</a>中的步骤合并新增代码。</p>
 <h2 id="相关模块">相关模块</h2>
+<ol>
+<li>utils/graph: 实现了基于邻接表的无向图</li>
+<li>optim/stats_manager: 用于管理统计信息，包括直方图的存储</li>
+</ol>
 <h2 id="基础功能实现顺序">基础功能实现顺序</h2>
+<ol>
+<li>utils/histogram.cpp: 补全直方图的构建和估计函数。</li>
+<li>optim/stats_manager.cpp: 补全读取表的数据并构建直方图的过程。</li>
+<li>oper/basic_node.cpp: 补全Filter算子的基数估计过程。</li>
+<li>optim/optim.cpp: 完成Optimizor中连接顺序优化过程。</li>
+</ol>
 <h2 id="可选高级功能">可选高级功能</h2>
 <p>不要求将高级功能集成到主分支中，建议单开分支完成实验。但是建议同学们设计验证自己实验结果的测例并给出测试的可视化结果展示。</p>
 <ol>
-<li>or转union的逻辑优化(1分)：相对简单的逻辑优化过程，在生成执行树过程中将or条件转化为上层union结点，同时实现UnionNode结点并完成转化过程（继承OperNode，用于合并查询结果）。</li>
+<li>or转union的逻辑优化(1分)：相对简单的逻辑优化过程，在生成执行树过程中将or条件转化为上层union结点，需要实现UnionNode结点并完成转化过程（继承OperNode，用于合并查询结果）。</li>
 <li>投影下推的逻辑优化(2分)：将投影算子ProjectNode下推，通过尽早进行投影运算减少算子间的数据传输量。这一操作的主要难点在于提前确定需要投影的列，同时管理何时添加投影算子，以及维护下推后列对应Index的变化。注意，不是所有的投影运算都直接下降到TableScan和Filter,Join之间，有些列要求在Filter,Join后进行投影。例如：select t.a from t where t.b &lt; 1; 需要在TableScan后添加a,b的投影算子，并在Filter之后添加a的投影算子。</li>
-<li>Join代价估计以及对应的物理优化（3分）：这一功能的正确和完整实现非常困难，建议同学们阅读有关于代价估计的相关教材内容并参考当前经典的数据库系统（PostgreSQL，MySQL等）对应功能实现文档后，仔细思考实现方法和可行性后再进行实验。本实验要求自选一个现有的经典数据库系统，复现其有关于Join代价估计和相关物理优化的简化版本。可以在阅读资料，确定实现明确的实现思路后（一定要思路明确），和助教确认可行性。</li>
+<li><strong>[挑战性项目]</strong> Join基数估计以及对应的物理优化（3分）：这一功能的正确和完整实现非常困难，建议同学们阅读有关于基数估计的相关教材内容并参考当前经典的数据库系统（PostgreSQL，MySQL等）对应功能实现文档后，仔细思考实现方法和可行性后再确定是否进行该实验。本实验要求自选一个现有的经典数据库系统，复现其有关于Join基数估计和相关物理优化的简化版本。建议先阅读资料，确定实现明确的实现思路后和助教讨论设计的可行性 <strong>（考虑到课程人数众多，所以同学们和助教确认前，需要先准备好要复现系统的join基数估计方法以及物理优化方法的总结，和复现的思路与清晰的设计示意图）</strong> 。</li>
 </ol>
-<p>同时也鼓励同学们结合相关课程内容提出自己的创新设计。</p>
+<p>同时也鼓励同学们结合相关课程内容提出自己的创新设计。注意，挑战性项目难度很高，需要非常大的工作量完成，建议对数据库系统查询优化非常感兴趣的同学进行挑战。</p>
 <p>高级功能满分3分。</p>
 <h2 id="测试说明">测试说明</h2>
 <p>本次实验主要考察多表连接顺序的选择，测试中主要使用了 analyze 和 explain 指令。</p>
@@ -367,12 +385,12 @@ t4(id int, score float): 共 100 行
 <p>下面，结合一个简单的示例来解释连接顺序的优化过程。此处以30测例中第一条查询语句为例：</p>
 <pre><code class="lang-sql">explain <span class="hljs-keyword">select</span> t2.id <span class="hljs-keyword">from</span> t1, t2, t3, t4 <span class="hljs-keyword">where</span> t3.score <span class="hljs-operator">&lt;</span> <span class="hljs-number">80.0</span> <span class="hljs-keyword">and</span> t4.id <span class="hljs-operator">=</span> t3.id <span class="hljs-keyword">and</span> t3.id <span class="hljs-operator">=</span> t2.id <span class="hljs-keyword">and</span> t2.id <span class="hljs-operator">=</span> t1.id;
 </code></pre>
-<p>经过代价估计过程，可以得出各个表对应的执行树算子代价分别为：</p>
+<p>经过基数估计过程，可以得出各个表对应的执行树算子基数分别为：</p>
 <table>
 <thead>
 <tr>
 <th style="text-align:center">表名</th>
-<th style="text-align:center">代价</th>
+<th style="text-align:center">基数</th>
 </tr>
 </thead>
 <tbody>
@@ -396,11 +414,11 @@ t4(id int, score float): 共 100 行
 </table>
 <p>此时，我们以表作为结点，连接关系作为边，可以生成一张无向的连接图。</p>
 <p><img src="pics/join_graph.png" alt="Join Graph"></p>
-<p>考虑到join代价估计非常困难，所以基础功能直接使用了一种非常简单的启发式算法，从最小代价结点出发依次添加相邻最小代价结点的贪心过程。</p>
+<p>考虑到join基数估计非常困难，所以基础功能直接使用了一种非常简单的启发式算法，从最小基数结点出发依次添加相邻最小基数结点的贪心过程。</p>
 <p>实际执行过程如下：</p>
 <ol>
-<li>首先，选择最小代价结点t1，此时邻接结点集合为{t2}，已连接结点集合为{t1}</li>
-<li>当邻接结点集合不为空时，从邻接结点结合取出最小代价结点添加到已连接结点集合，本步骤即为取出t2，此时邻接结点集合为{}，已连接结点集合为{t1,t2}。</li>
+<li>首先，选择最小基数结点t1，此时邻接结点集合为{t2}，已连接结点集合为{t1}</li>
+<li>当邻接结点集合不为空时，从邻接结点结合取出最小基数结点添加到已连接结点集合，本步骤即为取出t2，此时邻接结点集合为{}，已连接结点集合为{t1,t2}。</li>
 <li>将新添加结点的所有不在已连接集合的邻接结点加入到邻接结点集合，本步骤将添加t3，此时邻接结点集合为{t3}。</li>
 <li>重复2,3直至邻接结点集合为空。</li>
 <li>注意，每次步骤2取出新节点时，新的结点和已经完成连接的部分存在且仅存在1条连接关系（不考虑多列连接的必然结果），每次执行步骤2时按顺序记录这条连接关系，取出{t2}时连接顺序为{t1.t2}，取出t3时连接顺序为{t1.t2, t2.t3}...。</li>
@@ -410,7 +428,7 @@ t4(id int, score float): 共 100 行
 <h2 id="截止时间">截止时间</h2>
 <p>2022年5月8日（第十一周周日）晚23:59分。</p>
 <hr>
-<p><em><small>last update at: 2022/4/25 20:45:40</small></em></p>
+<p><em><small>last update at: 2022/4/25 21:16:21</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -470,7 +488,7 @@ t4(id int, score float): 共 100 行
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"lab 4: 优化器","level":"2.4","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 3: 执行器","level":"2.3","depth":1,"path":"lab3.md","ref":"lab3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab4.md","mtime":"2022-04-25T12:45:29.379Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-25T12:45:41.598Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"lab 4: 优化器","level":"2.4","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 3: 执行器","level":"2.3","depth":1,"path":"lab3.md","ref":"lab3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab4.md","mtime":"2022-04-25T13:16:10.181Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-25T13:16:22.401Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
