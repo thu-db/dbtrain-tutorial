@@ -13,7 +13,7 @@
 
 实验开始前，请按照文档中[更新说明](https://thu-db.github.io/dbtrain-tutorial/intro.html#%E6%9B%B4%E6%96%B0%E8%AF%B4%E6%98%8E)中的步骤合并新增代码。
 
-为加快 CI 评测速度，本次实验通过定义 SKIP_LOG 宏关闭了日志功能，代码更新后可能无法通过 lab 2 测试，但应仍能正确通过 lab 1 和 lab 3 测试。
+为加快 CI 评测速度，本次实验通过定义 SKIP_LOG 宏关闭了日志功能，代码更新后可能无法通过 lab 2 测试，但应仍能正确编译并通过 lab 1 和 lab 3 测试。若更新后不能通过 lab 1 和 lab 3 测试，可搜索 `#ifndef SKIP_LOG` 的位置查看是否需要跳过更多代码。
 
 ## 相关模块
 
