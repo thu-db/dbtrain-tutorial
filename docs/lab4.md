@@ -86,6 +86,14 @@ Select:
 					Table Scan Node(t3):
 ```
 
+此外，在连接顺序重排的过程中，需要确保两表之间存在连接条件，如对于 SQL
+
+```
+explain select t2.id from t1, t2, t3, t4 where t3.score < 80.0 and t4.id = t1.id and t4.id2 = t2.id2 and t4.id = t3.id;
+```
+
+虽然 t1 和 t2 是基数最小的两个表，但由于 t1 和 t2 之间没有连接条件，所以不能将 t1 和 t2 优先连接。
+
 ## 截止时间
 
 2022年5月8日（第十一周周日）晚23:59分。
