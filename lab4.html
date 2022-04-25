@@ -306,11 +306,56 @@
 <h2 id="相关模块">相关模块</h2>
 <h2 id="基础功能实现顺序">基础功能实现顺序</h2>
 <h2 id="可选高级功能">可选高级功能</h2>
-<h2 id="实现要点">实现要点</h2>
-<h2 id="截止时间">截止时间</h2>
+<h2 id="测试说明">测试说明</h2>
+<p>本次实验主要考察多表连接顺序的选择，测试中主要使用了 analyze 和 explain 指令。</p>
+<p>测试数据库中共有 4 张表：</p>
+<pre><code>t1(id int, score float): 共 10 行
+t2(id int, score float): 共 50 行
+t3(id int, score float, temp float): 共 100 行
+t4(id int, score float): 共 100 行
+</code></pre><p>id 列为单调递增序列。</p>
+<p>score 列为均匀随机值，范围 [0, 100]。</p>
+<p>temp 列为均匀随机值，范围 [35, 38]。</p>
+<p>score 列和 temp 列分布独立。</p>
+<p>analyze 指令用于生成直方图，计算当前数据库所有表的数值型列的统计信息，保存至 StatsManager 的 stats_map_ 中。<strong>统计信息只要求保存至内存，无需持久化到磁盘。</strong></p>
+<p>explain 指令用于打印查询计划树节点，本次实验主要涉及投影节点（Project Node）、连接节点（Join Node）、选择节点（Filter Node）、扫描节点（Table Scan Node）。</p>
+<p>根据节点高度不同，打印节点前会先打印一定数量的&apos;\t&apos;，高度相同的节点打印的&apos;\t&apos;数量相同。</p>
+<p>例如，对于以下 SQL 语句：</p>
+<pre><code class="lang-sql">explain <span class="hljs-keyword">select</span> t2.id <span class="hljs-keyword">from</span> t1, t2, t3 <span class="hljs-keyword">where</span> t3.id <span class="hljs-operator">=</span> t1.id <span class="hljs-keyword">and</span> t3.id <span class="hljs-operator">=</span> t2.id <span class="hljs-keyword">and</span> t3.score <span class="hljs-operator">&lt;</span> <span class="hljs-number">30.0</span> <span class="hljs-keyword">and</span> t3.temp <span class="hljs-operator">&lt;</span> <span class="hljs-number">36.0</span>;
+</code></pre>
+<p>一种可能的查询计划树如下：</p>
+<p><img src="pics/plan_tree.svg" alt="plan_tree"></p>
+<p>该计划树打印后如下所示：</p>
+<pre><code>Select:
+    Project Node:
+        Join Node:JOIN
+            Join Node:JOIN
+                Filter Node:
+                    Table Scan Node(t3):
+                Table Scan Node(t1):
+            Table Scan Node(t2):
+</code></pre><p>本次实验主要关注连接顺序的选择，对测试数据的每条 SQL 语句，需确保优化器选择了正确的连接顺序。对于以上示例，需确保表 t3 和 t1 先连接，其次再和表 t2 连接。</p>
+<p>对于同一树高的左右节点顺序没有要求，因此以下几个查询计划树都可以通过测试：</p>
+<pre><code>Select:
+    Project Node:
+        Join Node:JOIN
+            Table Scan Node(t2):
+            Join Node:JOIN
+                Filter Node:
+                    Table Scan Node(t3):
+                Table Scan Node(t1):
+</code></pre><pre><code>Select:
+    Project Node:
+        Join Node:JOIN
+            Table Scan Node(t2):
+            Join Node:JOIN
+                Table Scan Node(t1):
+                Filter Node:
+                    Table Scan Node(t3):
+</code></pre><h2 id="截止时间">截止时间</h2>
 <p>2022年5月8日（第十一周周日）晚23:59分。</p>
 <hr>
-<p><em><small>last update at: 2022/4/25 15:46:04</small></em></p>
+<p><em><small>last update at: 2022/4/25 17:25:38</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -370,7 +415,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"lab 4: 优化器","level":"2.4","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 3: 执行器","level":"2.3","depth":1,"path":"lab3.md","ref":"lab3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab4.md","mtime":"2022-04-25T07:45:56.222Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-25T07:46:05.411Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"lab 4: 优化器","level":"2.4","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 3: 执行器","level":"2.3","depth":1,"path":"lab3.md","ref":"lab3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab4.md","mtime":"2022-04-25T09:25:30.023Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-04-25T09:25:38.776Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
