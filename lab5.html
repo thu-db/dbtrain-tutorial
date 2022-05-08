@@ -319,11 +319,15 @@
 <h2 id="相关模块">相关模块</h2>
 <h2 id="基础功能实现顺序">基础功能实现顺序</h2>
 <h2 id="测试说明">测试说明</h2>
+<p>本次实验主要考察并发过程中事务之间的隔离性问题，通过多版本并发控制实现快照隔离，测试中增加了 declare, enddecl, signal, wait, run 等指令。</p>
+<p>declare 和 enddecl 用于声明一个事务块，定义一个事务所包含的 SQL 语句，但并不执行这些 SQL。</p>
+<p>run 用于并发执行事务，如 run t1, t2, t3 表示并发执行 t1, t2, t3 三个事务。</p>
+<p>wait 和 signal 用于控制事务之间的并发，wait t1_2 表示等待信号 t1_2，其他事务可以通过 signal t1_2 发出信号 t1_2，从而使等待信号 t1_2 的事务继续进行。</p>
 <h2 id="可选高级功能">可选高级功能</h2>
 <h2 id="截止时间">截止时间</h2>
 <p>2022年5月22日（第十三周周日）晚23:59分。</p>
 <hr>
-<p><em><small>last update at: 2022/5/8 16:16:52</small></em></p>
+<p><em><small>last update at: 2022/5/8 16:45:07</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -383,7 +387,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"lab 5: 并发控制","level":"2.5","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 4: 优化器","level":"2.4","depth":1,"path":"lab4.md","ref":"lab4.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab5.md","mtime":"2022-05-08T08:21:36.063Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-05-08T08:21:51.855Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"lab 5: 并发控制","level":"2.5","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 4: 优化器","level":"2.4","depth":1,"path":"lab4.md","ref":"lab4.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab5.md","mtime":"2022-05-08T08:44:56.550Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-05-08T08:45:08.337Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
