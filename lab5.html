@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>FAQ · dbs-tutorial</title>
+        <title>lab 5: 优化器 · dbs-tutorial</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.7.1">
@@ -100,8 +100,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="faq.html" />
     
-    <link rel="prev" href="lab5.html" />
+    
+    <link rel="prev" href="lab4.html" />
     
 
     </head>
@@ -230,7 +232,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="lab5.html">
+        <li class="chapter active" data-level="2.5" data-path="lab5.html">
             
                 <a href="lab5.html">
             
@@ -250,7 +252,7 @@
         
         
     
-        <li class="chapter active" data-level="3.1" data-path="faq.html">
+        <li class="chapter " data-level="3.1" data-path="faq.html">
             
                 <a href="faq.html">
             
@@ -293,7 +295,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >FAQ</a>
+        <a href="." >lab 5: 优化器</a>
     </h1>
 </div>
 
@@ -311,15 +313,17 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <html><head></head><body><h1 id="常见问题">常见问题</h1>
-<p><strong>Q: 测试脚本运行 insert 正常，但在交互式命令行中复制 insert 语句运行时会卡出。</strong></p>
-<p>A: 部分 insert 语句较长，在交互式命令行无法工作，可以采用输入重定向方式运行，如：</p>
-<pre><code class="lang-bash">./bin/main &lt; /path/to/00_setup.sql
-</code></pre>
-<p><strong>Q: 测试脚本运行异常且没有输出，交互式命令行中复制 SQL 运行正常。</strong></p>
-<p>A: 同上，尝试采用输入重定向方式运行 SQL。</p>
-<p><strong>Q: parser 解析器无法正常工作，如输入正确的 SQL 语句却显示 Syntax Error，删除 build 文件夹重新编译依然无效。</strong></p>
-<p>A: 可能是由于 flex 和 bison 生成的 cpp 文件出现异常，如被编辑器格式化等。可删除 parser 文件夹下的 lex.yy.cpp, sql.tab.cpp 和 sql.tab.h 文件，然后重新编译。</p>
+                                <html><head></head><body><h1 id="lab-5-并发控制">LAB 5 并发控制</h1>
+<h2 id="实验概述">实验概述</h2>
+<h2 id="实验任务">实验任务</h2>
+<h2 id="相关模块">相关模块</h2>
+<h2 id="基础功能实现顺序">基础功能实现顺序</h2>
+<h2 id="测试说明">测试说明</h2>
+<h2 id="可选高级功能">可选高级功能</h2>
+<h2 id="截止时间">截止时间</h2>
+<p>2022年5月22日（第十三周周日）晚23:59分。</p>
+<hr>
+<p><em><small>last update at: 2022/5/8 16:16:52</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -363,10 +367,14 @@
 
             
                 
-                <a href="lab5.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: lab 5: 优化器">
+                <a href="lab4.html" class="navigation navigation-prev " aria-label="Previous page: lab 4: 优化器">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="faq.html" class="navigation navigation-next " aria-label="Next page: FAQ">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -375,7 +383,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"FAQ","level":"3.1","depth":1,"previous":{"title":"lab 5: 优化器","level":"2.5","depth":1,"path":"lab5.md","ref":"lab5.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"faq.md","mtime":"2022-05-08T08:16:32.228Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-05-08T08:16:53.868Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"lab 5: 优化器","level":"2.5","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 4: 优化器","level":"2.4","depth":1,"path":"lab4.md","ref":"lab4.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab5.md","mtime":"2022-05-08T08:16:32.228Z","type":"markdown"},"gitbook":{"version":"3.7.1","time":"2022-05-08T08:16:53.868Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
