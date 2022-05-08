@@ -12,6 +12,7 @@
 * [lab 2: 日志管理](lab2.md)
 * [lab 3: 执行器](lab3.md)
 * [lab 4: 优化器](lab4.md)
+* [lab 5: 优化器](lab5.md)
 
 ## 常见问题
 
