@@ -83,7 +83,7 @@ cmake ..
 make -j4
 ```
 
-由于实验框架中部分函数需要同学们自己实现，所以编译过程中出现 `no return statement in function returning non-void` 的 warning 是正常的。
+由于实验框架中部分函数需要同学们自己实现，所以编译过程中出现 `non-void function does not return a value [-Wreturn-type]` 或 `no return statement in function returning non-void [-Wreturn-type]` 的 warning 是正常的。
 
 如果环境配置没有问题，应成功编译出可执行程序 `main` ：
 
