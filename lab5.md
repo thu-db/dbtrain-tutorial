@@ -159,5 +159,3 @@ explain select t2.id from t1, t2, t3, t4 where t3.score < 80.0 and t4.id = t1.id
 ## 截止时间
 
 2023 年 5 月 21 日（第十三周周日）晚 23:59 分。
-
-{% include "/footer.md" %}
