@@ -8,7 +8,7 @@
 
 ### Ubuntu 环境配置
 
-建议使用 Ubuntu 20.04 及更高版本，使用 apt 安装依赖：
+建议使用 Ubuntu 22.04 及更高版本，使用 apt 安装依赖：
 
 ```bash
 sudo apt install cmake make flex bison g++
@@ -41,7 +41,7 @@ cmake --version
 
 ```bash
 git clone git@git.tsinghua.edu.cn:dbtrain/2022/dbtrain-lab-xxxxxxxxx.git
-mv dbtrain-lab-xxxxxxxxx dbtrain-lab
+mv dbtrain-lab-20xxxxxxx dbtrain-lab
 ```
 
 仓库重命名操作是必须的，否则测试脚本无法正常工作。
