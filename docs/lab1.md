@@ -132,5 +132,3 @@ RecordList 为由多个 Record 指针组成的数组，Record 类由 Field 指�
 ## 截止时间
 
 2023 年 3 月 26 日（第五周周日）晚 23:59 分。
-
-{% include "/footer.md" %}

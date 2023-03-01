@@ -141,5 +141,3 @@ git diff debug > xxx.patch(任意patch名)
 3. 保密规范
 
 各位同学一定**不要将本实验**放到公共仓库上。
-
-{% include "/footer.md" %}
