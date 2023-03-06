@@ -37,7 +37,7 @@ cmake --version
 
 ### 拉取实验仓库并重命名
 
-使用 git clone 和 mv 命令（将 xxxxxxxxxx 替换为你的学号）：
+使用 git clone 和 mv 命令（将 20xxxxxxxx 替换为你的学号）：
 
 ```bash
 git clone git@git.tsinghua.edu.cn:dbtrain/2023/dbtrain-lab-20xxxxxxx.git
@@ -70,7 +70,7 @@ git clone git@git.tsinghua.edu.cn:dbtrain/2022/dbtrain-lab-test.git
 └── ...
 ```
 
-之后每次实验测试仓库都会更新，开始新实验前请先通过`git pull`命令更新测试仓库。
+新一次实验发布时，测试仓库可能会更新，开始新实验前请先通过`git pull`命令更新测试仓库。
 
 ### 编译实验框架
 
@@ -83,24 +83,30 @@ cmake ..
 make -j4
 ```
 
+或使用写好的编译脚本文件：
+
+```bash
+./build.sh
+```
+
 由于实验框架中部分函数需要同学们自己实现，所以编译过程中出现 `non-void function does not return a value [-Wreturn-type]` 或 `no return statement in function returning non-void [-Wreturn-type]` 的 warning 是正常的。
 
-如果环境配置没有问题，应成功编译出可执行程序 `main` ：
+如果环境配置没有问题，应成功编译出可执行程序 `cli` ：
 
 ```
 ...
 [ 94%] Linking CXX static library ../lib/libthdb.a
 [ 94%] Built target thdb
-Scanning dependencies of target main
+Scanning dependencies of target cli
 [ 97%] Building CXX object src/CMakeFiles/main.dir/cli.cpp.o
-[100%] Linking CXX executable ../bin/main
-[100%] Built target main
+[100%] Linking CXX executable ../bin/cli
+[100%] Built target cli
 ```
 
-运行 `./bin/main` 即可进入数据库交互界面：
+运行 `./bin/cli` 即可进入数据库交互界面：
 
 ```
-./bin/main
+./bin/cli
 dbtrain> show databases;
 +----------+
 | Database |
@@ -141,7 +147,7 @@ name | STRING | 4
 score | FLOAT | 8
 ```
 
-该参数主要用于方便测试脚本进行结果比对，你在本地与数据库交互时无需使用该参数。
+该参数主要用于测试脚本进行结果比对，你在本地与数据库交互时无需使用该参数。
 
 ## 测试脚本使用方法
 
@@ -169,11 +175,13 @@ dbtrain-lab-test
 
 `test.sh`是为 CI 准备的脚本，本地测试不会用到它。
 
-`check.py` 为测试脚本，在第 1 次实验中，该脚本会通过 `../dbtrain-lab/build/bin/main -s` 命令运行数据库，枚举 lab1/test 目录下的所有文件，将这些文件按照序号从小到大的顺序依次输入数据库。同时脚本会在 lab1 文件夹下建立 tmp 文件夹，将数据库的标准输出重定向到 tmp 文件夹下的文件中，最后将 tmp 文件夹的文件与 result 文件夹的文件内容进行对比，文件内容一致即通过测试。
+`check.py` 为测试脚本，在第 n 次实验中，该脚本会通过 `../dbtrain-lab/build/bin/cli -s` 命令运行数据库，枚举 lab{1..n}/test 目录下的所有文件，将这些文件按照序号从小到大的顺序依次输入数据库。同时脚本会在 labx 文件夹下建立 tmp 文件夹，将数据库的标准输出重定向到 tmp 文件夹下的文件中，最后将 tmp 文件夹的文件与 result 文件夹的文件内容进行对比，文件内容一致即通过测试。
 
 由于标准错误 stderr 不会被重定向到文件中，因此你可以在实验代码中使用 cerr 输出调试信息，cerr 输出的信息不会影响测试结果。
 
 脚本默认会运行 test 目录下的所有文件，你可以通过 `-u` 或 `--until` 参数控制脚本运行的文件，如 `python3 check.py -u 10` 将只会运行 00 和 10 两个测试文件。
+
+同时，你可以通过 `-l` 或 `--lab` 参数控制脚本进行第几次 lab 的测试，如 `python3 check.py -l 3` 则会运行 lab1, lab2 和 lab3 的测试。
 
 ### result 文件格式说明
 
@@ -186,7 +194,7 @@ t_basic
 t_basic_2
 ```
 
-第一行表示当前运行的是第几条 SQL 及对应的 SQL 语句，仅用于增加文件可读性，测试脚本比对结果时会去掉改行。
+第一行表示当前运行的是第几条 SQL 及对应的 SQL 语句，仅用于增加文件可读性，测试脚本比对结果时会去掉该行。
 
 接下来的几行表示期望输出结果，SQL 对输出结果顺序没有要求，脚本会先将结果排序后再进行比对，因此如果你的数据库输出如下：
 
