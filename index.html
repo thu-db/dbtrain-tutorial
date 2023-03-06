@@ -269,7 +269,7 @@
 <p>上述图片中模块后编号表示对应的实验编号。
 此处按照实验设计的顺序简单介绍各个模块的主要功能：</p>
 <ol>
-<li>缓存和磁盘：底层缓存和磁盘管理，支持UNIX操作系统（Linux+Mac），不支持Windows操作系统。</li>
+<li>缓存和磁盘：底层缓存和磁盘管理，支持类 UNIX 操作系统（Linux + Mac），不支持 Windows 操作系统。</li>
 <li>日志：仅负责存储日志信息。</li>
 <li>记录管理：负责数据库系统中关系内记录的管理，实现了对于表(Table)，记录(Record)，以及字段(Field)等数据库系统基本组成部分的抽象，同时负责处理这些基本组成部分的到实际物理页面的序列化和反序列化。</li>
 <li>事务管理：负责日志的解析以及在基于日志的自动恢复等操作，需要负责处理事务重做和事务回滚。</li>
@@ -313,7 +313,7 @@
 <h4 id="utils-模块">utils 模块</h4>
 <p>一些常用的数据结构，此处给出了并查集(UFSet)以及位图(Bitmap)。</p>
 <h4 id="result-模块">result 模块</h4>
-<p>用于前端输出，包含记录头和记录内容。</p>
+<p>用于查询结果的输出，包含记录头和记录内容。</p>
 <h4 id="system-模块">system 模块</h4>
 <p>数据库管理模块，主要实现了元信息的管理。</p>
 <h4 id="parser-模块">parser 模块</h4>
@@ -321,7 +321,7 @@
 <h4 id="extra">Extra</h4>
 <p>cli.cpp为主程序入口。defines.h是通用头文件，可以将常量值和常用的类型声明置于该文件内。</p>
 <hr>
-<p><em><small>last update at: 2023/3/1 16:36:35</small></em></p>
+<p><em><small>last update at: 2023/3/6 17:02:29</small></em></p>
 </body></html>
                                 
                                 </section>
@@ -377,7 +377,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"实验框架","level":"1.1","depth":1,"next":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"README.md","mtime":"2023-03-01T15:53:33.562Z","type":"markdown"},"gitbook":{"version":"3.7.5","time":"2023-03-01T15:53:54.173Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"实验框架","level":"1.1","depth":1,"next":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"README.md","mtime":"2023-03-06T09:01:53.477Z","type":"markdown"},"gitbook":{"version":"3.7.5","time":"2023-03-06T09:02:32.724Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

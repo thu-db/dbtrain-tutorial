@@ -282,7 +282,7 @@ cmake --version
 <h2 id="运行实验框架">运行实验框架</h2>
 <p>配好环境后，按照以下步骤进行操作：</p>
 <h3 id="拉取实验仓库并重命名">拉取实验仓库并重命名</h3>
-<p>使用 git clone 和 mv 命令（将 xxxxxxxxxx 替换为你的学号）：</p>
+<p>使用 git clone 和 mv 命令（将 20xxxxxxxx 替换为你的学号）：</p>
 <pre><code class="lang-bash">git <span class="hljs-built_in">clone</span> git@git.tsinghua.edu.cn:dbtrain/2023/dbtrain-lab-20xxxxxxx.git
 mv dbtrain-lab-20xxxxxxx dbtrain-lab
 </code></pre>
@@ -303,7 +303,7 @@ mv dbtrain-lab-20xxxxxxx dbtrain-lab
 │   ├── check.py
 │   ├── ...
 └── ...
-</code></pre><p>之后每次实验测试仓库都会更新，开始新实验前请先通过<code>git pull</code>命令更新测试仓库。</p>
+</code></pre><p>新一次实验发布时，测试仓库可能会更新，开始新实验前请先通过<code>git pull</code>命令更新测试仓库。</p>
 <h3 id="编译实验框架">编译实验框架</h3>
 <p>进入 <code>dbtrain-lab</code> 目录，运行如下命令进行编译：</p>
 <pre><code class="lang-bash"><span class="hljs-built_in">cd</span> dbtrain-lab
@@ -311,17 +311,20 @@ mkdir build &amp;&amp; <span class="hljs-built_in">cd</span> build
 cmake ..
 make -j4
 </code></pre>
+<p>或使用写好的编译脚本文件：</p>
+<pre><code class="lang-bash">./build.sh
+</code></pre>
 <p>由于实验框架中部分函数需要同学们自己实现，所以编译过程中出现 <code>non-void function does not return a value [-Wreturn-type]</code> 或 <code>no return statement in function returning non-void [-Wreturn-type]</code> 的 warning 是正常的。</p>
-<p>如果环境配置没有问题，应成功编译出可执行程序 <code>main</code> ：</p>
+<p>如果环境配置没有问题，应成功编译出可执行程序 <code>cli</code> ：</p>
 <pre><code>...
 [ 94%] Linking CXX static library ../lib/libthdb.a
 [ 94%] Built target thdb
-Scanning dependencies of target main
+Scanning dependencies of target cli
 [ 97%] Building CXX object src/CMakeFiles/main.dir/cli.cpp.o
-[100%] Linking CXX executable ../bin/main
-[100%] Built target main
-</code></pre><p>运行 <code>./bin/main</code> 即可进入数据库交互界面：</p>
-<pre><code>./bin/main
+[100%] Linking CXX executable ../bin/cli
+[100%] Built target cli
+</code></pre><p>运行 <code>./bin/cli</code> 即可进入数据库交互界面：</p>
+<pre><code>./bin/cli
 dbtrain&gt; show databases;
 +----------+
 | Database |
@@ -355,7 +358,7 @@ Name | Type | Length
 id | INT | 4
 name | STRING | 4
 score | FLOAT | 8
-</code></pre><p>该参数主要用于方便测试脚本进行结果比对，你在本地与数据库交互时无需使用该参数。</p>
+</code></pre><p>该参数主要用于测试脚本进行结果比对，你在本地与数据库交互时无需使用该参数。</p>
 <h2 id="测试脚本使用方法">测试脚本使用方法</h2>
 <p>测试仓库目录结构如下：</p>
 <pre><code>dbtrain-lab-test
@@ -376,16 +379,17 @@ score | FLOAT | 8
 │       └── 40_many_rows.sql
 └── test.sh
 </code></pre><p><code>test.sh</code>是为 CI 准备的脚本，本地测试不会用到它。</p>
-<p><code>check.py</code> 为测试脚本，在第 1 次实验中，该脚本会通过 <code>../dbtrain-lab/build/bin/main -s</code> 命令运行数据库，枚举 lab1/test 目录下的所有文件，将这些文件按照序号从小到大的顺序依次输入数据库。同时脚本会在 lab1 文件夹下建立 tmp 文件夹，将数据库的标准输出重定向到 tmp 文件夹下的文件中，最后将 tmp 文件夹的文件与 result 文件夹的文件内容进行对比，文件内容一致即通过测试。</p>
+<p><code>check.py</code> 为测试脚本，在第 n 次实验中，该脚本会通过 <code>../dbtrain-lab/build/bin/cli -s</code> 命令运行数据库，枚举 lab{1..n}/test 目录下的所有文件，将这些文件按照序号从小到大的顺序依次输入数据库。同时脚本会在 labx 文件夹下建立 tmp 文件夹，将数据库的标准输出重定向到 tmp 文件夹下的文件中，最后将 tmp 文件夹的文件与 result 文件夹的文件内容进行对比，文件内容一致即通过测试。</p>
 <p>由于标准错误 stderr 不会被重定向到文件中，因此你可以在实验代码中使用 cerr 输出调试信息，cerr 输出的信息不会影响测试结果。</p>
 <p>脚本默认会运行 test 目录下的所有文件，你可以通过 <code>-u</code> 或 <code>--until</code> 参数控制脚本运行的文件，如 <code>python3 check.py -u 10</code> 将只会运行 00 和 10 两个测试文件。</p>
+<p>同时，你可以通过 <code>-l</code> 或 <code>--lab</code> 参数控制脚本进行第几次 lab 的测试，如 <code>python3 check.py -l 3</code> 则会运行 lab1, lab2 和 lab3 的测试。</p>
 <h3 id="result-文件格式说明">result 文件格式说明</h3>
 <p>result 文件的每个结果对应 sql 文件中一条 SQL 的期望输出，两个结果之间用一个空行隔开，一个典型的结果格式如下：</p>
 <pre><code>-- 10.show tables;
 Tables
 t_basic
 t_basic_2
-</code></pre><p>第一行表示当前运行的是第几条 SQL 及对应的 SQL 语句，仅用于增加文件可读性，测试脚本比对结果时会去掉改行。</p>
+</code></pre><p>第一行表示当前运行的是第几条 SQL 及对应的 SQL 语句，仅用于增加文件可读性，测试脚本比对结果时会去掉该行。</p>
 <p>接下来的几行表示期望输出结果，SQL 对输出结果顺序没有要求，脚本会先将结果排序后再进行比对，因此如果你的数据库输出如下：</p>
 <pre><code>Tables
 t_basic_2
@@ -496,7 +500,7 @@ Test 40_many_rows FAILED
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"测试说明","level":"1.2","depth":1,"next":{"title":"实验说明","level":"1.3","depth":1,"path":"intro.md","ref":"intro.md","articles":[]},"previous":{"title":"实验框架","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"test.md","mtime":"2023-03-01T15:53:33.566Z","type":"markdown"},"gitbook":{"version":"3.7.5","time":"2023-03-01T15:53:54.173Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"测试说明","level":"1.2","depth":1,"next":{"title":"实验说明","level":"1.3","depth":1,"path":"intro.md","ref":"intro.md","articles":[]},"previous":{"title":"实验框架","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"test.md","mtime":"2023-03-06T09:01:53.481Z","type":"markdown"},"gitbook":{"version":"3.7.5","time":"2023-03-06T09:02:32.724Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

@@ -271,18 +271,18 @@
 </code></pre>
 <p>各位同学仅需要搜索对应的注释&quot;// LAB N BEGIN&quot;即可快速定位补充代码的区域。</p>
 <h2 id="更新说明">更新说明</h2>
-<p>每次实验仅会发布截止到该实验所需要的源代码部分，所以进行新的实验之前，需要将新的实验框架更新部分添加到当前的实验框架上。为了新增一个远程仓库，在你的 dbtrain-lab 仓库目录下执行：</p>
-<pre><code class="lang-bash">git remote add upstream git@git.tsinghua.edu.cn:dbtrain/2022/dbtrain-lab-template.git
+<p>实验框架可能会有更新，此时需要将实验框架更新部分添加到当前的实验框架上。为了新增一个远程仓库，在你的 dbtrain-lab 仓库目录下执行：</p>
+<pre><code class="lang-bash">git remote add upstream git@git.tsinghua.edu.cn:dbtrain/dbtrain-lab-template.git
 </code></pre>
 <p>之后每次需要拉取新的分支时，执行</p>
 <pre><code class="lang-bash">git fetch upstream
 </code></pre>
-<p>然后再将更新的分支并入你的代码，例如将 lab2 分支以 merge 方式并入当前分支，执行</p>
-<pre><code class="lang-bash">git merge upstream/lab2
+<p>然后再将更新的分支并入你的代码，例如将 upstream 的 master 分支以 merge 方式并入当前分支，执行</p>
+<pre><code class="lang-bash">git merge upstream/master
 </code></pre>
 <p>merge 后可能产生冲突（如果你和上游仓库对同样的地方进行了不同的修改），这种情况请手动解决所有冲突并执行 git 的 add 和 commit 指令完成合并。</p>
 <h2 id="提交说明">提交说明</h2>
-<p>评测通过 CI 进行，每当你在 master 分支上 push 更新时，评测机会自动将仓库的 src 文件夹放入测试仓库中编译，然后运行测试脚本进行测试。</p>
+<p>评测通过 CI 进行，每当你在 master 分支上 push 更新时，评测机会自动将仓库的 src 文件夹进行编译，然后运行测试脚本进行测试。</p>
 <p>不要私自修改 .gitlab-ci.yml 文件。</p>
 <p>评测机环境为 Ubuntu 22.04，各工具版本如下：</p>
 <pre><code>cmake 3.22.1
@@ -291,7 +291,7 @@ g++ 11.3.0
 flex 2.6.4
 bison 3.8.2
 </code></pre><ol>
-<li><p>第 N 次实验截止后发布第 N+1 次实验，防止出现提交错误。</p>
+<li><p>第 N 次实验截止后发布第 N + 1 次实验，防止出现提交错误。</p>
 </li>
 <li><p>第 N 次实验截止后发布一个 10 天的作业补交窗口。</p>
 </li>
@@ -299,14 +299,15 @@ bison 3.8.2
 </li>
 </ol>
 <h2 id="补交说明">补交说明</h2>
-<p>CI 评测默认情况下只会进行当前阶段实验的测试，如在 lab2 阶段只会对 lab2 相关测试进行评测，对于在 lab2 阶段补交 lab1 实验的同学，如想要进行 lab1 的评测，可在实验仓库根目录下新建 LAB.txt 文件，文件内容为 1，表示想要进行 lab1 测试，评测机会读取 LAB.txt 文件内容进行 lab1 相关测试。后续实验补交流程同理。</p>
+<p>CI 评测默认情况下只会进行当前阶段实验的测试，如在 lab3 实验阶段会对 lab1 至 lab 3 的相关测试进行评测，因此，若在 lab 2 补交阶段（同时也是 lab 3 实验阶段）才完成 lab 2 的实验，则会导致评测结果失败。</p>
+<p>对于在 lab3 实验阶段补交 lab2 实验的同学，如想要只进行 lab1 和 lab2 的评测，可在实验仓库根目录下新建 LAB.txt 文件，文件内容为 2，表示想要进行 lab2 阶段的测试，评测机会读取 LAB.txt 文件内容进行 lab1 和 lab2 相关测试。后续实验补交流程同理。</p>
 <h2 id="高级功能">高级功能</h2>
 <ol>
 <li><p>高级功能不要求严格按照各次实验文档给出的推荐选项，只需要选择老师课程讲解过程中与实验相关的知识即可。</p>
 </li>
 <li><p>高级功能的添加要尽可能设计对应的测试用例，可以使用 SQL 测例，也可以使用 google-test 等工具进行单元测试。</p>
 </li>
-<li><p>高级功能的总评为 3 分，只需要给出一个合理的设计也能获得部分分数，但是希望取得高分则必须实现有挑战性的一些功能。</p>
+<li><p>高级功能的总评为 3 分，只需要给出一个合理的设计也能获得部分分数，但是希望取得高分则必须实现一些有挑战性的功能。</p>
 </li>
 </ol>
 <h2 id="评分说明">评分说明</h2>
@@ -363,11 +364,11 @@ git diff debug &gt; xxx.patch(任意patch名)
 <ol>
 <li>诚信规范</li>
 </ol>
-<p>各位同学一定要独立完成各次实验，本课程鼓励同学们思想上的交流，但<strong>不建议同学们直接进行代码交换</strong>。如果发现严重的代码雷同，可能会面临助教谈话甚至于当此实验记为0分的风险。</p>
+<p>各位同学一定要独立完成各次实验，本课程鼓励同学们思想上的交流，但<strong>不建议同学们直接进行代码交换</strong>，<strong>也不要抄袭往届学长学姐的代码</strong>。如果发现严重的代码雷同，可能会面临助教谈话甚至于当此实验记为0分的风险。</p>
 <ol>
 <li>保密规范</li>
 </ol>
-<p>各位同学一定<strong>不要将本实验</strong>放到公共仓库上。</p>
+<p>各位同学一定<strong>不要将本实验放到公共仓库上</strong>。</p>
 </body></html>
                                 
                                 </section>
@@ -427,7 +428,7 @@ git diff debug &gt; xxx.patch(任意patch名)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"实验说明","level":"1.3","depth":1,"next":{"title":"lab 1: 记录管理","level":"2.1","depth":1,"path":"lab1.md","ref":"lab1.md","articles":[]},"previous":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"intro.md","mtime":"2023-03-01T15:53:33.562Z","type":"markdown"},"gitbook":{"version":"3.7.5","time":"2023-03-01T15:53:54.173Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"实验说明","level":"1.3","depth":1,"next":{"title":"lab 1: 记录管理","level":"2.1","depth":1,"path":"lab1.md","ref":"lab1.md","articles":[]},"previous":{"title":"测试说明","level":"1.2","depth":1,"path":"test.md","ref":"test.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"intro.md","mtime":"2023-03-06T09:01:53.477Z","type":"markdown"},"gitbook":{"version":"3.7.5","time":"2023-03-06T09:02:32.724Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
