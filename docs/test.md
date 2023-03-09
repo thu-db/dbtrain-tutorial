@@ -40,8 +40,8 @@ cmake --version
 使用 git clone 和 mv 命令（将 20xxxxxxxx 替换为你的学号）：
 
 ```bash
-git clone git@git.tsinghua.edu.cn:dbtrain/2023/dbtrain-lab-20xxxxxxx.git
-mv dbtrain-lab-20xxxxxxx dbtrain-lab
+git clone git@git.tsinghua.edu.cn:dbtrain/2023/dbtrain-20xxxxxxx.git
+mv dbtrain-20xxxxxxx dbtrain-lab
 ```
 
 仓库重命名操作是必须的，否则测试脚本无法正常工作。
