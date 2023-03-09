@@ -179,9 +179,9 @@ dbtrain-lab-test
 
 由于标准错误 stderr 不会被重定向到文件中，因此你可以在实验代码中使用 cerr 输出调试信息，cerr 输出的信息不会影响测试结果。
 
-脚本默认会运行 test 目录下的所有文件，你可以通过 `-u` 或 `--until` 参数控制脚本运行的文件，如 `python3 check.py -u 10` 将只会运行 00 和 10 两个测试文件。
+你可以通过 `-l` 或 `--lab` 参数控制脚本进行前几次 lab 的测试，如 `python3 check.py -l 3` 则会运行 lab1, lab2 和 lab3 的测试。
 
-同时，你可以通过 `-l` 或 `--lab` 参数控制脚本进行第几次 lab 的测试，如 `python3 check.py -l 3` 则会运行 lab1, lab2 和 lab3 的测试。
+脚本默认会运行 test 目录下相应 lab 的所有文件，你可以通过 `-u` 或 `--until` 参数控制最后一次 lab 中脚本运行的文件，如 `python3 check.py -l 2 -u 10` 将只会运行 lab 2 的 00 和 10 两个测试文件（以及 lab 1 的所有测试文件）。
 
 ### result 文件格式说明
 

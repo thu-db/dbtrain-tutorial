@@ -36,7 +36,7 @@
 
 ## 一条 SQL 语句的运行流程
 
-为理解实验框架工作流程，我们以 show databases 为例，来分析 SQL 是如何一步步转化为我们期望的结果的。
+为理解实验框架工作流程，我们以 show databases 语句为例，来分析 SQL 是如何一步步转化为我们期望的结果的。
 
 cli 程序的主函数位于 cli.cpp 文件，该文件的核心代码为：
 
@@ -108,7 +108,6 @@ class Record {
     ...
 
 private:
-
     vector<Field*> field_list_;
 
 ```
@@ -119,11 +118,11 @@ RecordList 为由多个 Record 指针组成的数组，Record 类由 Field 指�
 
 返回 Result 结果后，cli 函数通过 printer->Print(&result) 将结果打印出来，一条 SQL 的运行就结束了。
 
-如需了解 Insert, Delete, Update, Select 等语句的运行过程，可查看 parser/visitor.cpp 中对应的 visit 函数，这些语句运行过程中可能需要 Preprocessor 类为 SQL 中的列添加对应的表，也会通过 Optimizer 构造相应的算子节点和查询计划，具体代码位于 optim 和 oper 两个文件夹下，**实验 1 需要重点关注 oper/scan_node.cpp 中的 TableScan 节点的实现**。
+如需了解 Insert, Delete, Update, Select 等语句的运行过程，可查看 parser/visitor.cpp 中对应的 visit 函数，这些语句运行过程中可能需要 Preprocessor 类为 SQL 中的列添加对应的表，随后通过 Optimizer 构造相应的算子节点并生成查询计划，最后通过执行器的 RunNext 函数执行查询，具体代码位于 optim 和 oper 两个文件夹下，**实验 1 需要重点关注 oper/scan_node.cpp 中的 TableScan 节点的实现**。
 
 建议同学们开始实验前首先阅读代码，充分了解不同 SQL 的运行过程，然后再填充缺失代码，了解实验框架也会为之后的实验带来帮助。
 
-每创建一个数据库，会生成一个文件夹；每创建一张表，会生成两个文件，后缀名为 .meta 和 .data，分别存储表的结构元信息（表中有多少个列，每列的数据类型，每列的长度，以及一些关于表的页面的相关信息）和表的数据。
+每创建一个数据库，会生成一个文件夹，文件夹里会存在 LOGDATA, LOGIDX 和 MASTER 等文件，这些是 lab2 相关的日志文件，你在 lab1 无需关注；每创建一张表，会生成两个文件，后缀名为 .meta 和 .data，分别存储表的结构元信息（表中有多少个列，每列的数据类型，每列的长度，以及一些关于表的页面的相关信息）和表的数据。
 
 在实验 1 中，你需要首先实现 table_meta 的 Load 和 Store 函数，这两个函数实现了表的元信息加载存储，Load 函数将页面中的无格式字节数据反序列化为内存中的数据信息，Store 函数将内存中记录的信息通过序列化存储到页面中，并进一步由 BufferManager 存储到磁盘，从而实现表的元信息的持久化存储，正确实现此功能后，你应该可以成功通过 00_setup 的第 14 条 SQL（前 13 条 SQL 不需要对实验框架做任何修改即可通过）。
 
