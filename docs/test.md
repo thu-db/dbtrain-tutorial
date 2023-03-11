@@ -98,7 +98,7 @@ make -j4
 [ 94%] Linking CXX static library ../lib/libthdb.a
 [ 94%] Built target thdb
 Scanning dependencies of target cli
-[ 97%] Building CXX object src/CMakeFiles/main.dir/cli.cpp.o
+[ 97%] Building CXX object src/CMakeFiles/cli.dir/cli.cpp.o
 [100%] Linking CXX executable ../bin/cli
 [100%] Built target cli
 ```
@@ -133,7 +133,7 @@ dbtrain>
 数据库交互程序支持 `-s` 参数，该参数用于控制结果打印格式，加上该参数后将只打印必要字段，不打印表格框：
 
 ```
-./bin/main -s
+./bin/cli -s
 dbtrain> use test;
 SUCCESS
 
