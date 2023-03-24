@@ -30,7 +30,7 @@
     "gitbook-plugin-intopic-toc": "^1.1.1",
     "gitbook-plugin-katex-pro": "^0.13.11",
     "gitbook-plugin-splitter": "^0.0.8",
-    "honkit": "^3.7.1",
+    "honkit": "^3.7.5",
     "honkit-plugin-search-plus": "^1.0.0",
     "honkit-plugin-todo": "^1.0.0"
   }
