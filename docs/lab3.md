@@ -11,6 +11,8 @@
 2. 修改PageHandle，实现多线程情境下的记录页面控制。
 3. 修改Table接口，实现适应MVCC场景的增删改查。
 
+实验开始前，请按照文档中[更新说明](https://thu-db.github.io/dbtrain-tutorial/intro.html#%E6%9B%B4%E6%96%B0%E8%AF%B4%E6%98%8E)中的步骤合并新增代码。
+
 ## 相关模块
 
 1. tx/lock_manager: 锁管理服务，可以定义并操作共享锁。可以用于保护数据页面的读写并发。
