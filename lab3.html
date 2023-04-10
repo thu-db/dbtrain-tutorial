@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>FAQ · dbs-tutorial</title>
+        <title>lab 3: 并发控制 · dbs-tutorial</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.7.5">
@@ -100,8 +100,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="faq.html" />
     
-    <link rel="prev" href="lab3.html" />
+    
+    <link rel="prev" href="lab2.html" />
     
 
     </head>
@@ -204,7 +206,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="lab3.html">
+        <li class="chapter active" data-level="2.3" data-path="lab3.html">
             
                 <a href="lab3.html">
             
@@ -224,7 +226,7 @@
         
         
     
-        <li class="chapter active" data-level="3.1" data-path="faq.html">
+        <li class="chapter " data-level="3.1" data-path="faq.html">
             
                 <a href="faq.html">
             
@@ -267,7 +269,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >FAQ</a>
+        <a href="." >lab 3: 并发控制</a>
     </h1>
 </div>
 
@@ -285,19 +287,45 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <html><head></head><body><h1 id="常见问题">常见问题</h1>
-<p><strong>Q: 测试脚本运行 insert 正常，但在交互式命令行中复制 insert 语句运行时会卡出。</strong></p>
-<p>A: 部分 insert 语句较长，在交互式命令行无法工作，可以使用输入重定向方式运行，如：</p>
-<pre><code class="lang-bash">./bin/cli &lt; /path/to/00_setup.sql
-</code></pre>
-<p><strong>Q: 测试脚本运行异常且没有输出，交互式命令行中复制 SQL 运行正常。</strong></p>
-<p>A: 同上，尝试使用输入重定向方式运行 SQL。通常此类问题是由指针异常导致的，可以使用 gdb 等调试器进行调试。</p>
-<p><strong>Q: parser 解析器无法正常工作，如输入正确的 SQL 语句却显示 Syntax Error，删除 build 文件夹重新编译依然无效。</strong></p>
-<p>A: 可能是由于 flex 和 bison 生成的 cpp 文件出现异常，如被编辑器格式化等。可删除 parser 文件夹下的 lex.yy.cpp, sql.tab.cpp 和 sql.tab.h 文件，然后重新编译。</p>
-<p><strong>Q: 编译报错: ISO C++17 does not allow &apos;register&apos; storage class specifier [-Wregister]</strong></p>
-<p>A: 通常是由于使用了旧版 flex 和 bison，导致生成的代码含有 clang 编译器不支持的 register 关键词，可以通过升级 flex 和 bison 版本解决。注意：mac 系统默认会使用系统自带的 flex 和 bison，通常版本较老，可以使用 homebrew 安装，并按照安装过程中的输出信息设置相应的环境变量。</p>
-<p><strong>Q: 我的本地测试正常，但是 CI 无法通过测试</strong></p>
-<p>A: 通常是本地编译器（如clang）与评测机编译器（g++）不同导致的，可参考文档中的评测机环境，在相同的环境下编译运行代码。</p>
+                                <html><head></head><body><h1 id="lab-3-并发控制">LAB 3 并发控制</h1>
+<h2 id="实验概述">实验概述</h2>
+<p>本次实验主要关注于数据库系统的并发控制，重点关注于基于MVCC技术的多线程事务处理。通过实现MVCC机制实现多线程情况下的并发事务处理，让同学们对于数据库系统中并发控制机制有进一步的理解。</p>
+<h2 id="实验任务">实验任务</h2>
+<p>本次实验主要有3个任务：</p>
+<ol>
+<li>设置和获取记录隐藏列，添加对应的接口。</li>
+<li>修改PageHandle，实现多线程情境下的记录页面控制。</li>
+<li>修改Table接口，实现适应MVCC场景的增删改查。</li>
+</ol>
+<p>实验开始前，请按照文档中<a href="https://thu-db.github.io/dbtrain-tutorial/intro.html#%E6%9B%B4%E6%96%B0%E8%AF%B4%E6%98%8E" target="_blank">更新说明</a>中的步骤合并新增代码。</p>
+<p>本次实现需要使用事务编号作为版本号，因此需要开启日志记录功能来保证系统重启时可以正确恢复事务编号。合并代码后重新编译默认将开启事务记录功能，请同学们一定不要手动关闭，否则会出现无法通过Lab 5测试的问题。</p>
+<h2 id="相关模块">相关模块</h2>
+<ol>
+<li>tx/lock_manager: 锁管理服务，可以定义并操作共享锁。可以用于保护数据页面的读写并发。</li>
+<li>tx/signal_manager: 信号管理服务，可以定义信号并等待信号。可以利用信号机制控制不同线程之间的执行顺序。</li>
+</ol>
+<h2 id="基础功能实现顺序">基础功能实现顺序</h2>
+<ol>
+<li>record/record_factory: 添加操作隐藏列的接口。</li>
+<li>table/page_handle.cpp: 实现多线程场景下的记录页面的插入、删除和查找。</li>
+<li>table/table.cpp: 修改多线程场景下的表的插入、删除和更新。</li>
+</ol>
+<h2 id="测试说明">测试说明</h2>
+<p>本次实验主要考察并发过程中事务之间的隔离性问题，通过多版本并发控制实现快照隔离，测试中增加了 declare, enddecl, signal, wait, run 等指令。</p>
+<p>declare 和 enddecl 用于声明一个事务块，定义一个事务所包含的 SQL 语句，但并不执行这些 SQL。</p>
+<p>run 用于并发执行事务，如 run t1, t2, t3 表示并发执行 t1, t2, t3 三个事务。</p>
+<p>wait 和 signal 用于控制事务之间的并发，wait t1_2 表示等待信号 t1_2，其他事务可以通过 signal t1_2 发出信号 t1_2，从而使等待信号 t1_2 的事务继续进行。</p>
+<h2 id="可选高级功能">可选高级功能</h2>
+<p>不要求将高级功能集成到主分支中，建议单开分支完成实验。但是建议同学们设计验证自己实验结果的测例并给出测试的可视化结果展示。</p>
+<ol>
+<li><p>MVCC 的垃圾回收(1分)。由于 MVCC 机制中删除操作并没有真正删除对应的记录，仅仅标记了相应记录对应的版本号，使系统存在一些不需要的垃圾数据。设计算法回收垃圾数据所占用的空间，说明算法设计的要点，如垃圾回收的时机，垃圾数据的判定方法等，并需设计测例证明垃圾回收前后存储空间的变化情况。</p>
+</li>
+<li><p>写写冲突的处理(2分:1分基础+1分死锁)。当前测例仅包含读写冲突，在 MVCC 并发控制机制下不会发生阻塞，设计算法正确处理并发条件下的写写冲突问题，需详细给出写写冲突的处理方法,尤其是涉及死锁问题的处理(死锁占1分，死锁检测或死锁避免方法均可),并设计测例证明算法正确性(无死锁测例+有死锁测例，建议画一下测例的并发流程图)。</p>
+</li>
+</ol>
+<p>高级功能满分3分。</p>
+<h2 id="截止时间">截止时间</h2>
+<p>2023 年 4 月 23 日（第九周周日）晚 23:59 分。</p>
 </body></html>
                                 
                                 </section>
@@ -341,10 +369,14 @@
 
             
                 
-                <a href="lab3.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: lab 3: 并发控制">
+                <a href="lab2.html" class="navigation navigation-prev " aria-label="Previous page: lab 2: 日志管理">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="faq.html" class="navigation navigation-next " aria-label="Next page: FAQ">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -353,7 +385,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"FAQ","level":"3.1","depth":1,"previous":{"title":"lab 3: 并发控制","level":"2.3","depth":1,"path":"lab3.md","ref":"lab3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"faq.md","mtime":"2023-04-10T02:11:25.815Z","type":"markdown"},"gitbook":{"version":"3.7.5","time":"2023-04-10T02:11:44.948Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"lab 3: 并发控制","level":"2.3","depth":1,"next":{"title":"FAQ","level":"3.1","depth":1,"path":"faq.md","ref":"faq.md","articles":[]},"previous":{"title":"lab 2: 日志管理","level":"2.2","depth":1,"path":"lab2.md","ref":"lab2.md","articles":[]},"dir":"ltr"},"config":{"plugins":["alerts","back-to-top-button","chapter-fold","click-reveal","code","codeblock-label","expandable-chapters-interactive","hide-element","intopic-toc","katex-pro","search-plus","todo"],"root":"./docs","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"chapter-fold":{},"intopic-toc":{"selector":".markdown-section h1, .markdown-section h2, .markdown-section h3, .markdown-section h4, .markdown-section h5, .markdown-section h6","mode":"nested","maxDepth":6,"isCollapsed":true,"isScrollspyActive":true,"visible":true,"label":"目录"},"todo":{},"codeblock-label":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"code":{"copyButtons":true},"hide-element":{"elements":[".gitbook-link"]},"katex-pro":{},"fontsettings":{"theme":"white","family":"sans","size":2},"click-reveal":{},"highlight":{},"expandable-chapters-interactive":{},"back-to-top-button":{},"alerts":{},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"dbs-tutorial","gitbook":"*"},"file":{"path":"lab3.md","mtime":"2023-04-10T02:11:25.819Z","type":"markdown"},"gitbook":{"version":"3.7.5","time":"2023-04-10T02:11:44.948Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
