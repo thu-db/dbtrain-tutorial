@@ -7,6 +7,7 @@
 ## 实验任务
 
 本次实验主要有3个任务：
+1. 修改CheckPointLog接口，增加当前事务编号的存储和恢复过程。
 1. 设置和获取记录隐藏列，添加对应的接口。
 2. 修改PageHandle，实现多线程情境下的记录页面控制。
 3. 修改Table接口，实现适应MVCC场景的增删改查。
@@ -20,9 +21,10 @@
 
 ## 基础功能实现顺序
 
-1. record/record_factory: 添加操作隐藏列的接口。
-2. table/page_handle.cpp: 实现多线程场景下的记录页面的插入、删除和查找。
-3. table/table.cpp: 修改多线程场景下的表的插入、删除和更新。
+1. log/checkpoint_log: 增加当前事务编号的存储和恢复过程。
+2. record/record_factory: 添加操作隐藏列的接口。
+3. table/page_handle.cpp: 实现多线程场景下的记录页面的插入、删除和查找。
+4. table/table.cpp: 修改多线程场景下的表的插入、删除和更新。
 
 ## 测试说明
 
