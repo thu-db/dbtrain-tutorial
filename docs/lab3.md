@@ -50,7 +50,7 @@ wait 和 signal 用于控制事务之间的并发，wait t1_2 表示等待信号
 
 经同学指出，目前的实验框架存在如下错误：
 
-1. table.cpp 的 InsertRecord 函数中，首先读取了表的元信息，确定插入记录的 page_id 和 slot_id 等，这些操作没有对元信息进行加锁，可能导致多个线程同时插入数据时产生错误。
+1. table.cpp 的 InsertRecord 函数中，首先读取了表的元信息，确定插入记录的 page_id 和 slot_id 等，插入后对表的元信息进行了更新，这些操作没有对元信息进行加锁，可能导致多个线程同时插入数据时产生错误。
 
 2. UpdateRecord 函数在实验3中拆分成了 DeleteRecord + InsertRecord 两个部分，而 UpdateNode 是通过 ScanNode 的 Next 方法以页为粒度进行 LoadRecords 操作。假设 page 0 已满，且有一个 record 需要 update，由于 delete 不会真正将 page 0 的 record 删除，新的 insert 会被插入 page 1，此时 UpdateNode 会调用 Next 函数对 page 1 进行 LoadRecords 操作，新插入的记录会被重新 delete + insert 一次。在本次实验的测例中，该错误不会影响正确性，但如果一页只能存放一个 record，该错误会造成死循环。
 
