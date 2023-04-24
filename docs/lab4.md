@@ -9,8 +9,6 @@
 1. 完成 AndConditionNode 和 OrConditionNode 的构建过程。
 2. 实现 JoinNode 的构建和执行过程。
 
-实验开始前，请按照文档[更新说明](https://thu-db.github.io/dbtrain-tutorial/intro.html#%E6%9B%B4%E6%96%B0%E8%AF%B4%E6%98%8E)中的步骤合并新增代码。
-
 ## 相关模块
 
 1. optim 模块：负责新建执行算子节点。
