@@ -1,6 +1,6 @@
-# dbtrain-2022
+# dbtrain
 
-Course project for database training in 2022 Spring.
+此仓库为2023年之前清华大学《数据库专题训练》课程的实验文档，2024年起将使用 [huadb](https://github.com/thu-db/huadb-doc) 作为课程实验。
 
 ## 准备工作
 
